@@ -36,9 +36,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'campaignManager.cmArmies',
-    'campaignManager.cmProfiles', 
-    'campaignManager.cmCampaigns',
+    'campaignManager.armies',
+    'campaignManager.profiles', 
+    'campaignManager.campaigns',
     'south',
 )
 
