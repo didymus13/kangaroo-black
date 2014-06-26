@@ -54,3 +54,4 @@ docs/_build/
 
 # Test Databases
 db.sqlite3
+/nbproject/
