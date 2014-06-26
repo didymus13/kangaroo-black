@@ -1,3 +1,9 @@
 from django.db import models
+from social.apps.django_app.default.models import UserSocialAuth
 
-# Create your models here.
+class Profile(models.Model):
+    user = models.ForeignKey(UserSocialAuth)
+    username = models.CharField(max_length=124)
+    
+    def __unicode__(self):
+        return self.username
