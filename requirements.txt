@@ -11,4 +11,5 @@ python-social-auth==0.1.26
 requests==2.3.0
 requests-oauthlib==0.4.1
 six==1.7.2
+textile==2.1.8
 wsgiref==0.1.2
