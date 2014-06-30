@@ -1,10 +1,10 @@
 from django.db import models
-from social.apps.django_app.default.models import UserSocialAuth
 from campaignManager.armies.models import Army
+from campaignManager.profiles.models import Profile
   
 # Create your models here.
 class Campaign(models.Model):
-    moderator   = models.ForeignKey(UserSocialAuth)
+    moderator   = models.ForeignKey(Profile)
     armies      = models.ManyToManyField(Army)
     name        = models.CharField(max_length=128)
     blurb       = models.TextField(blank=True)
