@@ -12,12 +12,13 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+from credentials import *
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'e62h@&3a&c*(2jl7_kzltw#2bz9t_ee(cs83gv#^o2!s-^e7yb'
+#SECRET_KEY = 'e62h@&3a&c*(2jl7_kzltw#2bz9t_ee(cs83gv#^o2!s-^e7yb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -80,11 +81,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    '/var/www/static/',
+)
 
 TEMPLATE_CONTEXT_PROCESSORS = (
    'django.contrib.auth.context_processors.auth',
@@ -100,7 +106,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 AUTHENTICATION_BACKENDS = (
    'social.backends.facebook.FacebookOAuth2',
-   'social.backends.google.GoogleOAuth2',
    'social.backends.twitter.TwitterOAuth',
    'django.contrib.auth.backends.ModelBackend',
 )
+
+LOGIN_REDIRECT_URL = '/'
