@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'campaignManager.campaigns',
     'south',
     'social.apps.django_app.default',
+    'django_countries',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -111,3 +112,5 @@ AUTHENTICATION_BACKENDS = (
 )
 
 LOGIN_REDIRECT_URL = '/'
+
+COUNTRIES_FLAG_PATH = 'images/flags/%s.png'

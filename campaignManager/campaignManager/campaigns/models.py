@@ -1,12 +1,15 @@
 from django.db import models
 from campaignManager.armies.models import Army
 from campaignManager.profiles.models import Profile
+from django_countries.fields import CountryField
   
 # Create your models here.
 class Campaign(models.Model):
     moderator   = models.ForeignKey(Profile)
     armies      = models.ManyToManyField(Army)
     name        = models.CharField(max_length=128)
+    location    = models.CharField(max_length=128, blank=True)
+    country     = CountryField(blank=True)
     blurb       = models.TextField(blank=True)
     turn        = models.CharField(max_length=64, default=1, blank=True)
     
