@@ -12,6 +12,7 @@ class Campaign(models.Model):
     country     = CountryField(blank=True)
     blurb       = models.TextField(blank=True)
     turn        = models.CharField(max_length=64, default=1, blank=True)
+    lookingForPlayers = models.BooleanField(default=False)
     
     def __unicode__(self):
         return self.name
