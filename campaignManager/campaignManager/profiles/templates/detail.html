@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load markdown_deux_tags %}
+
+{% block title %}{{ profile.username|default:profile.user }}{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-xs-6 col-sm-3 col-md-2">
+        <h1 class="visible-xs">{{ profile.username|default:profile.user }}</h1>
+        <img src="http://placehold.it/207x310/&text=photo" class="col-xs-12" />
+    </div>
+    <div class="col-xs-6 col-sm-9 col-md-10">
+        <h1 class="hidden-xs">{{ profile.username|default:profile.user }}</h1>
+        <p>{{ profile.bio|markdown }}</p>
+    </div>
+</div> <!-- .row -->
+
+<div class="row">
+    <div class="col-xs-12 col-sm-6">
+        <h2>Campaigns</h2>
+        {% for c in campaigns %}
+        {% empty %}
+        <p>{{ profile.username|default:profile.user }} is not participating in 
+            any campaigns</p>
+        {% endfor %}
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <h2>Armies</h2>
+        {% for a in armies %}
+        {% empty %}
+        <p>{{ profile.username|default:profile.user }} has no armies on file</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
