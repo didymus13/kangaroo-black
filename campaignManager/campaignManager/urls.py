@@ -12,4 +12,5 @@ urlpatterns = patterns('',
     url('', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),
     url(r'^$', 'campaignManager.profiles.views.home', name='home'),
+    url('^profile/', include('campaignManager.profiles.urls', namespace='profile')),
 )

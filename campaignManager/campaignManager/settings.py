@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'south',
     'social.apps.django_app.default',
     'django_countries',
+    'markdown_deux',
 )
 
 MIDDLEWARE_CLASSES = (
