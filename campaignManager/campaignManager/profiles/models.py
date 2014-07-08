@@ -19,4 +19,4 @@ class Profile(models.Model):
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
-        fields = ['username', 'email', 'location', 'country']
+        fields = ['username', 'email', 'location', 'country', 'bio']
