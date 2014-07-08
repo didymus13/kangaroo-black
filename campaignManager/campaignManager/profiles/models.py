@@ -1,11 +1,11 @@
 from django.db import models
-from social.apps.django_app.default.models import UserSocialAuth
 #from campaignManager.armies.models import Game
 from django_countries.fields import CountryField
 from django.forms import ModelForm
+from django.contrib.auth.models import User
 
 class Profile(models.Model):
-    user = models.OneToOneField(UserSocialAuth)
+    user = models.OneToOneField(User)
     username = models.CharField(max_length=124, unique=True)
     email = models.EmailField(null=True, blank=True, unique=True)
     location = models.CharField(max_length=124, blank=True, null=True)
@@ -19,4 +19,4 @@ class Profile(models.Model):
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
-        fields = ['username', 'email', 'location', 'country', 'bio']
+        fields = ['id', 'username', 'email', 'location', 'country', 'bio']
