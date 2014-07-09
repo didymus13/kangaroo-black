@@ -63,18 +63,19 @@
                                 Armies <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
+                                <li><a href="{% url 'armies:index' %}">All</a></li>
+                                <li><a href="{% url 'armies:index' 'warhammer_40k' %}">Warhammer 40k</a></li>
+                                <li><a href="{% url 'armies:index' 'whfb' %}">Warhammer Fantasy Battles</a></li>
+                                <li><a href="{% url 'armies:index' 'warmachine' %}">Warmachine</a></li>
+                                <li><a href="{% url 'armies:index' 'hordes' %}">Hordes</a></li>
+                                <li><a href="{% url 'armies:index' 'malifaux' %}">Malifaux</a></li>
+                                <li><a href="{% url 'armies:index' 'dropzone_commander' %}">Dropzone Commander</a></li>
+                                <li><a href="{% url 'armies:index' 'dust_tactics' %}">DUST Tactics</a></li>
+                                {% if user and not user.is_anonymous %}
+                                <li class="divider"></li>
                                 <li><a href="#">My Armies</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">All</a></li>
-                                <li><a href="#">Warhammer 40k</a></li>
-                                <li><a href="#">Warhammer Fantasy Battles</a></li>
-                                <li><a href="#">Warmachine</a></li>
-                                <li><a href="#">Hordes</a></li>
-                                <li><a href="#">Malifaux</a></li>
-                                <li><a href="#">Dropzone Commander</a></li>
-                                <li><a href="#">DUST Tactics</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Create a new Army</a></li>
+                                <li><a href="{% url 'armies:new' %}">Create a new Army</a></li>
+                                {% endif %}
                             </ul>
                         </li>
                         {% if user and not user.is_anonymous %}

@@ -11,10 +11,11 @@ class Common(models.Model):
         abstract = True
 
 class Game(Common):
-    pass
+    slug = models.SlugField(null=True)
 
 class Faction(Common):
     game = models.ForeignKey(Game)
+    slug = models.SlugField(null=True)
     
 class Army(Common):
     user        = models.ForeignKey(Profile)
