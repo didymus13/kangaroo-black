@@ -21,7 +21,7 @@ def edit(request):
         'user': request.user
     })
     user = User.objects.get(pk=request.user.id)
-    profile, created = Profile.objects.get_or_create(user=user.id)
+    profile, created = Profile.objects.get_or_create(user=user)
 
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=profile)
