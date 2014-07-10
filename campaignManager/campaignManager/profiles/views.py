@@ -1,11 +1,9 @@
-import profile
 from django.shortcuts import render, render_to_response, get_object_or_404
 from django.core.context_processors import csrf
 from django.template.context import RequestContext
 from campaignManager.profiles.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
 
 def home(request):
    context = RequestContext(request,
@@ -38,7 +36,6 @@ def edit(request):
     
 def detail(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
-    print profile;
     return render_to_response('detail.html', {
         'request': request,
         'profile': profile,
