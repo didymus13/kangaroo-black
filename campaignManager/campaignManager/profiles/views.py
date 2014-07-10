@@ -36,7 +36,6 @@ def edit(request):
     
 def detail(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
-    print profile;
     return render_to_response('detail.html', {
         'request': request,
         'profile': profile,

@@ -1,5 +1,6 @@
 from django.db import models
-from campaignManager.profiles.models import Profile
+from django.contrib.auth.models import User
+from django.forms import ModelForm
 
 class Common(models.Model):
     name        = models.CharField(max_length=128)
@@ -18,11 +19,16 @@ class Faction(Common):
     slug = models.SlugField(null=True)
     
 class Army(Common):
-    user        = models.ForeignKey(Profile)
-    faction     = models.ForeignKey(Faction)
+    user        = models.ForeignKey(User)
+    faction     = models.ForeignKey(Faction, blank=True, null=True)
     blurb       = models.TextField(blank=True)
     armylist    = models.TextField(blank=True)
     public_list = models.BooleanField(default=True)
     
     class Meta:
         verbose_name_plural = 'armies'
+        
+class ArmyForm(ModelForm):
+    class Meta:
+        model = Army
+        exclude = ['user']
