@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def detail(request, pk):
-    army = get_object_or_404(Army, pk=pk)
+    army = get_object_or_404(Army, pk=pk, public_list=True)
     return render_to_response('detail.html', {
         'request': request,
         'user': request.user,
@@ -19,7 +19,7 @@ def index(request, slug=None):
     if slug:
         armies = Army.objects.filter(faction__game__slug=slug, public_list=True)
     else:
-        armies = Army.objects.all()
+        armies = Army.objects.filter(public_list=True)
     
     return render_to_response('index.html', {
         'request': request,
