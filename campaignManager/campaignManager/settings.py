@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'django_countries',
     'markdown_deux',
+    'guardian',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -110,7 +111,10 @@ AUTHENTICATION_BACKENDS = (
    'social.backends.facebook.FacebookOAuth2',
    'social.backends.twitter.TwitterOAuth',
    'django.contrib.auth.backends.ModelBackend',
+   'guardian.backends.ObjectPermissionBackend',
 )
+
+ANONYMOUS_USER_ID = -1
 
 LOGIN_REDIRECT_URL = '/'
 
