@@ -27,12 +27,6 @@ class Army(Common):
     
     class Meta:
         verbose_name_plural = 'armies'
-        permissions = (
-            'view_army', 'View Army',
-            'edit_army', 'Edit Army',
-            'create_army', 'Create Army',
-            'delete_army', 'Delete Army'
-        )
         
 class ArmyForm(ModelForm):
     class Meta:
