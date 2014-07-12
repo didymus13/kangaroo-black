@@ -10,5 +10,8 @@
     </div>
     {% endfor %}
     <button type="submit" class="btn btn-default">Submit</button>
+    {% if delete %}
+    <a href="{% url delete.path delete.value %}" class="btn btn-danger">Delete</a>
+    {% endif %}
 </form>
 {% endblock %}

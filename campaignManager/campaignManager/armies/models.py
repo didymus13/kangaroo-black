@@ -1,15 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from django.core.exceptions import ValidationError
 
 class Common(models.Model):
     name        = models.CharField(max_length=128)
     
-    def __unicode__(self):
-        return self.name
-    
     class Meta:
         abstract = True
+    
+    def __unicode__(self):
+        return self.name
 
 class Game(Common):
     slug = models.SlugField(null=True)
@@ -27,6 +28,9 @@ class Army(Common):
     
     class Meta:
         verbose_name_plural = 'armies'
+        
+    def is_owned_by(self, user):
+        return self.user == user
         
 class ArmyForm(ModelForm):
     class Meta:

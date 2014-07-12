@@ -113,9 +113,12 @@
         </nav>
         
         <div class="container-fluid">
-            <div class="row">
-                {% block deck %}{% endblock %}
-            </div>
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{message.tags}}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            
             <div class="row">
                 <div class="col-xs-12">{% block main %}{% endblock %}</div>
             </div>
