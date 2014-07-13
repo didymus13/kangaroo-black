@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from models import *
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
@@ -26,8 +26,50 @@ def index(request, status=None, slug=None):
 
 @login_required
 def edit(request, pk=None):
-    pass
+    delete = None # Initial state
+    
+    if pk: 
+        campaign = get_object_or_404(Campaign, pk=pk);
+        if campaign.moderator and not campaign.is_owned_by(request.user):
+            messages.add_message(
+                request, 
+                messages.ERROR, 
+                'Campaigns can only be edited by their owners'
+            )
+            return redirect('campaigns:detail', pk=campaign.pk)
+        delete = {'path': 'campaigns:delete', 'value': campaign.pk, }
+            
+    if request.method == 'POST':
+        if pk:
+            form = CampaignForm(request.POST, instance=campaign)
+        else:
+            form = CampaignForm(request.POST)
+        if form.is_valid():
+            campaign = form.save(commit=False)
+            campaign.moderator = request.user
+            campaign.save()
+            messages.add_message(request, messages.SUCCESS, 'Save Successful' )
+            
+        return redirect('campaigns:detail', pk=campaign.pk)
+        
+    elif pk:
+        form = CampaignForm(instance=campaign)
+    else:
+        form = CampaignForm()        
+            
+    return render(request, 'form.html', {
+        'form': form,
+        'user': request.user,
+        'delete': delete,
+    })
 
 @login_required
-def delete(request):
-    pass
+def delete(request, pk):
+    campaign = get_object_or_404(Campaign, pk=pk)
+    if campaign.is_owned_by(request.user):
+        campaign.delete()
+        messages.add_message(request, messages.SUCCESS, 'Delete successful')
+        return redirect('campaigns:index')
+    else:
+        messages.add_message(request, messages.ERROR, 'Campaigns can only be deleted by their owners')
+        return redirect('campaigns:detail', campaign.pk);

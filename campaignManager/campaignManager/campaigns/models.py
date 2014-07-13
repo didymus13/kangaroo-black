@@ -53,6 +53,8 @@ class CampaignMeta(models.Model):
         verbose_name_plural = 'campaign meta'
         
 class CampaignForm(ModelForm):
-    model = Campaign
-    exclude = ['moderator']
+    from campaignManager.armies.models import Game
+    class Meta:
+        model = Campaign
+        exclude = ['moderator', 'participants']
       
