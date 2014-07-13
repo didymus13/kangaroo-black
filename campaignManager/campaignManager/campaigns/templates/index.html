@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ campaign.game|default:'All' }} campaigns{% endblock %}
+
+{% block main %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Game</th>
+                <th>Moderator</th>
+                <th># Players</th>
+                <th>Status</th>
+              
+            </tr>
+        </thead>
+        <tbody>
+            {% campaign in campaigns %}
+            <tr>
+                <td>{{ campaign.name }}</td>
+                <td>{{ campaign.game }}</td>
+                <td>{{ campaign.moderator }}</td>
+                <td>{{ campaign.player_count }}</td>
+                <td>{{ campaign.status }}</td>
+            </tr>
+            {% empty %}
+            <tr><td>No campaigns found</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

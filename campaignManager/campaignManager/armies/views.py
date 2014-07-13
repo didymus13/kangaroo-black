@@ -5,9 +5,6 @@ from django.core.context_processors import csrf
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.messages import constants as message_constants
-
-MESSAGE_TAGS = {message_constants.ERROR: 'danger'}
 
 # Create your views here.
 def detail(request, pk):
@@ -21,13 +18,10 @@ def detail(request, pk):
     })
 
 def index(request, slug=None):
-    if slug:
-        armies = Army.objects.filter(faction__game__slug=slug, public_list=True)
-    else:
-        armies = Army.objects.filter(public_list=True)
+    armies = Army.objects.filter(public_list=True)
+    if slug: armies = armies.filter(faction__game__slug=slug)
     
     return render(request, 'index.html', {
-        'request': request,
         'user': request.user,
         'armies': armies
     })

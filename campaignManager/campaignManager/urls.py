@@ -14,4 +14,5 @@ urlpatterns = patterns('',
     url(r'^$', 'campaignManager.profiles.views.home', name='home'),
     url('^profile/', include('campaignManager.profiles.urls', namespace='profile')),
     url('^armies/', include('campaignManager.armies.urls', namespace='armies')),
+    url('^campaigns/', include('campaignManager.campaigns.urls', namespace='campaigns')),
 )
