@@ -42,20 +42,22 @@
                             <a href="/campaigns" class="dropdown-toggle" data-toggle="dropdown">
                                 Campaigns <span class="caret"></span>
                             </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">My Campaigns</a></li>
-                                <li><a href="#">Looking for players</a></li>
+                            <ul class="dropdown-menu" role="menu">                                
+                                <li><a href="{% url 'campaigns:index' %}">All</a></li>
+                                <li><a href="{% url 'campaigns:index' %}">Looking for players</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#">All</a></li>
-                                <li><a href="#">Warhammer 40k</a></li>
-                                <li><a href="#">Warhammer Fantasy Battles</a></li>
-                                <li><a href="#">Warmachine</a></li>
-                                <li><a href="#">Hordes</a></li>
-                                <li><a href="#">Malifaux</a></li>
-                                <li><a href="#">Dropzone Commander</a></li>
-                                <li><a href="#">DUST Tactics</a></li>
-                                <li class='divider'></li>
-                                <li><a href="#">Start a new campaign</a></li>
+                                <li><a href="{% url 'campaigns:index' '40k' %}">Warhammer 40k</a></li>
+                                <li><a href="{% url 'campaigns:index' 'whfb' %}">Warhammer Fantasy Battles</a></li>
+                                <li><a href="{% url 'campaigns:index' 'warmachine' %}">Warmachine</a></li>
+                                <li><a href="{% url 'campaigns:index' %}">Hordes</a></li>
+                                <li><a href="{% url 'campaigns:index' %}">Malifaux</a></li>
+                                <li><a href="{% url 'campaigns:index' %}">Dropzone Commander</a></li>
+                                <li><a href="{% url 'campaigns:index' %}">DUST Tactics</a></li>
+                                {% if user and not user.is_anonymous %}
+                                    <li class='divider'></li>
+                                    <li><a href="#">My Campaigns</a></li>
+                                    <li><a href="{% url 'campaigns:new' %}">Start a new campaign</a></li>
+                                {% endif %}
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -72,9 +74,9 @@
                                 <li><a href="{% url 'armies:index' 'dropzone_commander' %}">Dropzone Commander</a></li>
                                 <li><a href="{% url 'armies:index' 'dust_tactics' %}">DUST Tactics</a></li>
                                 {% if user and not user.is_anonymous %}
-                                <li class="divider"></li>
-                                <li><a href="#">My Armies</a></li>
-                                <li><a href="{% url 'armies:new' %}">Create a new Army</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">My Armies</a></li>
+                                    <li><a href="{% url 'armies:new' %}">Create a new Army</a></li>
                                 {% endif %}
                             </ul>
                         </li>
