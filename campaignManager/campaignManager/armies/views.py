@@ -2,7 +2,6 @@ from django.shortcuts import render
 from campaignManager.armies.models import *
 from django.shortcuts import render, render, get_object_or_404, redirect
 from django.core.context_processors import csrf
-from django.template.context import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 

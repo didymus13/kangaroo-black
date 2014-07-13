@@ -18,9 +18,21 @@
         <tbody>
             {% for campaign in campaigns %}
             <tr>
-                <td>{{ campaign.name }}</td>
-                <td>{{ campaign.game }}</td>
-                <td>{{ campaign.moderator }}</td>
+                <td>
+                    <a href="{% url 'campaigns:detail' campaign.pk %}">
+                        {{ campaign.name }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'campaigns:index' campaign.game.slug %}">
+                    {{ campaign.game }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'profile:detail' campaign.moderator.pk %}">
+                        {{ campaign.moderator }}
+                    </a>
+                </td>
                 <td>{{ campaign.player_count }}</td>
                 <td>{{ campaign.get_status_display }}</td>
             </tr>

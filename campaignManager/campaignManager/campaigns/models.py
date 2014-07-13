@@ -1,7 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
 from django.contrib.auth.models import User
-from campaignManager.armies.models import Army, Game
 from django_countries.fields import CountryField
   
 # Create your models here.
@@ -22,8 +21,7 @@ class Campaign(models.Model):
     
     name = models.CharField(max_length=128)
     moderator = models.ForeignKey(User)
-    game = models.ForeignKey(Game)
-    armies = models.ManyToManyField(Army, blank=True)
+    game = models.ForeignKey('armies.Game')
     participants = models.ManyToManyField(
         User, 
         related_name='Participant', 
@@ -39,6 +37,9 @@ class Campaign(models.Model):
     
     def __unicode__(self):
         return self.name
+    
+    def is_owned_by(self, user):
+        return self.moderator == user
 
 class CampaignMeta(models.Model):
     campaign    = models.ForeignKey(Campaign)
