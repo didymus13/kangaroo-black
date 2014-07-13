@@ -10,7 +10,7 @@ from django.contrib import messages
 def detail(request, pk):
     army = get_object_or_404(Army, pk=pk, public_list=True)
 
-    return render(request, 'detail.html', {
+    return render(request, 'armies_detail.html', {
         'request': request,
         'user': request.user,
         'army': army,
@@ -21,7 +21,7 @@ def index(request, slug=None):
     armies = Army.objects.filter(public_list=True)
     if slug: armies = armies.filter(faction__game__slug=slug)
     
-    return render(request, 'index.html', {
+    return render(request, 'armies_index.html', {
         'user': request.user,
         'armies': armies
     })

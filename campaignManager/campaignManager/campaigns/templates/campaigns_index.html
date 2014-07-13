@@ -16,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-            {% campaign in campaigns %}
+            {% for campaign in campaigns %}
             <tr>
                 <td>{{ campaign.name }}</td>
                 <td>{{ campaign.game }}</td>

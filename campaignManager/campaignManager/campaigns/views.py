@@ -6,7 +6,7 @@ from django.template.context import RequestContext
 # Create your views here.
 def detail(request, pk):
     campaign = get_object_or_404(Campaign, pk=pk)
-    return render(request, 'detail.html', {
+    return render(request, 'campaigns_detail.html', {
         'campaign': campaign,
         'user': request.user
     })
@@ -16,7 +16,7 @@ def index(request, status=None, slug=None):
     if status: campaigns = campaigns.filter(status=status)
     if slug: campaigns = campaigns.filter(game__slug=slug)
     
-    return render(request, 'index.html', {
+    return render(request, 'campaigns_index.html', {
         'campaigns': campaigns,
         'user': request.user,
     })
