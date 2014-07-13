@@ -22,7 +22,7 @@
                 <td>{{ campaign.game }}</td>
                 <td>{{ campaign.moderator }}</td>
                 <td>{{ campaign.player_count }}</td>
-                <td>{{ campaign.status }}</td>
+                <td>{{ campaign.get_status_display }}</td>
             </tr>
             {% empty %}
             <tr><td>No campaigns found</td></tr>

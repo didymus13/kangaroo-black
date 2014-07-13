@@ -11,7 +11,6 @@ def detail(request, pk):
     army = get_object_or_404(Army, pk=pk, public_list=True)
 
     return render(request, 'armies_detail.html', {
-        'request': request,
         'user': request.user,
         'army': army,
         'editable': army.is_owned_by(request.user)
@@ -61,7 +60,6 @@ def edit(request, pk=None):
             
     return render(request, 'form.html', {
         'form': form,
-        'request': request,
         'user': request.user,
         'delete': delete,
     })
