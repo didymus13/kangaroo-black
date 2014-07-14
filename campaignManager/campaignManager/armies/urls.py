@@ -12,5 +12,5 @@ urlpatterns = patterns('',
     url(r'^new/$', views.edit, name='new'),
     
     url(r'^$', views.index, name='index'),
-    url(r'^index/(?P<slug>.+)/$', views.index, name='index'),
+    url(r'^(?P<slug>.+)/$', views.index, name='index'),
 )
