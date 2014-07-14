@@ -15,6 +15,9 @@ class Common(models.Model):
 
 class Game(Common):
     slug = models.SlugField(null=True)
+    
+    class Meta:
+        ordering = ['name']
 
 class Faction(Common):
     game = models.ForeignKey(Game)
