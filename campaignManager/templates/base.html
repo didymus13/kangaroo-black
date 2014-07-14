@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load game_links %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -46,13 +47,8 @@
                                 <li><a href="{% url 'campaigns:index' %}">All</a></li>
                                 <li><a href="{% url 'campaigns:index' %}">Looking for players</a></li>
                                 <li class="divider"></li>
-                                <li><a href="{% url 'campaigns:index' '40k' %}">Warhammer 40k</a></li>
-                                <li><a href="{% url 'campaigns:index' 'whfb' %}">Warhammer Fantasy Battles</a></li>
-                                <li><a href="{% url 'campaigns:index' 'warmachine' %}">Warmachine</a></li>
-                                <li><a href="{% url 'campaigns:index' %}">Hordes</a></li>
-                                <li><a href="{% url 'campaigns:index' %}">Malifaux</a></li>
-                                <li><a href="{% url 'campaigns:index' %}">Dropzone Commander</a></li>
-                                <li><a href="{% url 'campaigns:index' %}">DUST Tactics</a></li>
+                                {% url 'campaigns:index' as campaign_url %}
+                                {% game_links campaign_url %}
                                 {% if user and not user.is_anonymous %}
                                     <li class='divider'></li>
                                     <li><a href="#">My Campaigns</a></li>
@@ -66,13 +62,8 @@
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{% url 'armies:index' %}">All</a></li>
-                                <li><a href="{% url 'armies:index' 'warhammer_40k' %}">Warhammer 40k</a></li>
-                                <li><a href="{% url 'armies:index' 'whfb' %}">Warhammer Fantasy Battles</a></li>
-                                <li><a href="{% url 'armies:index' 'warmachine' %}">Warmachine</a></li>
-                                <li><a href="{% url 'armies:index' 'hordes' %}">Hordes</a></li>
-                                <li><a href="{% url 'armies:index' 'malifaux' %}">Malifaux</a></li>
-                                <li><a href="{% url 'armies:index' 'dropzone_commander' %}">Dropzone Commander</a></li>
-                                <li><a href="{% url 'armies:index' 'dust_tactics' %}">DUST Tactics</a></li>
+                                {% url 'armies:index' as armies_url %}
+                                {% game_links armies_url %}
                                 {% if user and not user.is_anonymous %}
                                     <li class="divider"></li>
                                     <li><a href="#">My Armies</a></li>
