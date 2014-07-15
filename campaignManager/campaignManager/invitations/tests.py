@@ -1,7 +1,37 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from campaignManager.invitations.models import *
+from django.contrib.auth.models import User
+from campaignManager.campaigns.models import Campaign
+from campaignManager.armies.models import Game
+from django.core.urlresolvers import reverse
+from django.core import mail
 
 # Create your tests here.
 class InvitationTestCase(TestCase):
     def setUp(self):
-        pass
+        self.c = Client()
+        user = User.objects.create_user('mr_tester', 'test@example.com', '12345678')
+        user.save()
+        user = User.objects.create_user('mr_player', 'player@example.com', 'abcdef')
+        game = Game(name='Test Game', slug='test-game')
+        game.save()
+        campaign = Campaign(name='test campaign', moderator=user, game=game)
+        campaign.save()
+    
+    def test_send_invitation(self):
+        campaign = Campaign.objects.get(name='test campaign')
+        url = reverse('invitations:send', kwargs={'campaign_id':campaign.pk})
+        self.c.login(username='mr_tester', password='12345678')
+        
+        response = self.c.get(url)
+        self.assertContains(response, 'email')
+        
+        response = self.c.post(url, {'campaign':'1', 'email':'player@example.com'}, follow=True)
+        self.assertNotContains(response, 'Invitation not saved')
+        self.assertNotContains(response, 'Invalid header detected')
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, 'Campaign Invitation')
+        
+        invitation = Invitation.objects.get(email='player@example.com')
+        self.assertEqual(invitation.campaign, campaign, 'Campaigns do not match')
+        

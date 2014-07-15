@@ -15,4 +15,5 @@ urlpatterns = patterns('',
     url('^profile/', include('campaignManager.profiles.urls', namespace='profile')),
     url('^armies/', include('campaignManager.armies.urls', namespace='armies')),
     url('^campaigns/', include('campaignManager.campaigns.urls', namespace='campaigns')),
+    url('^invitations/', include('campaignManager.invitations.urls', namespace='invitations')),
 )
