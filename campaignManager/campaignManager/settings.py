@@ -44,7 +44,8 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'django_countries',
     'markdown_deux',
-    'campaignManager.cmtags'
+    'campaignManager.cmtags',
+    'campaignManager.invitations'
 )
 
 MIDDLEWARE_CLASSES = (
