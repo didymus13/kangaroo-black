@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib import messages
 from models import *
+from datetime import datetime, timedelta
 import uuid
 
 # Create your views here.
@@ -44,4 +45,18 @@ def send_invitation(request, campaign_id):
 
 @login_required
 def accept_invitation(request, uuid):
-    pass
+    invitation = get_object_or_404(Invitation, user=request.user, uuid=uuid)
+    campaign = invitation.campaign
+    try:
+        campaign.participants.add(request.user)
+        campaign.save()
+        invitation.delete()
+        messages.add_message(request, messages.SUCCESS, 
+            campaign.name+' invitation accepted')
+    except ValidationError:
+        messages.add_message(request, messages.ERROR, 'Campaign validation error')
+    except:
+        messages.add_message(request, messages.ERROR, 
+            'Invitation acceptance was not successful.')
+    finally:
+        return redirect('campaigns:detail', campaign.pk)

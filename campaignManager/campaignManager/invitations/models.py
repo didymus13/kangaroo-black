@@ -9,6 +9,7 @@ class Invitation(models.Model):
     email = models.EmailField(max_length=254)
     campaign = models.ForeignKey(Campaign)
     uuid = models.CharField(max_length=254)
+    created = models.DateTimeField(auto_now_add=True)
     
     def __unicode__(self):
         return self.identifier

@@ -5,6 +5,7 @@ from campaignManager.campaigns.models import Campaign
 from campaignManager.armies.models import Game
 from django.core.urlresolvers import reverse
 from django.core import mail
+import uuid
 
 # Create your tests here.
 class InvitationTestCase(TestCase):
@@ -34,4 +35,17 @@ class InvitationTestCase(TestCase):
         
         invitation = Invitation.objects.get(email='player@example.com')
         self.assertEqual(invitation.campaign, campaign, 'Campaigns do not match')
+        
+    def test_accept_invitation(self):
+        uid = uuid.uuid4()
+        campaign = Campaign.objects.get(name='test campaign')
+        user = User.objects.get(email='player@example.com')
+        invitation = Invitation(uuid=uid, campaign=campaign, email=user.email, user=user)
+        invitation.save()
+        
+        url = reverse('invitations:accept', kwargs={'uuid':uid})
+        self.c.login(username='mr_player', password='abcdef')
+        response = self.c.get(url, kwargs={'uuid': uid}, follow=True)
+        self.assertContains(response, campaign.name+' invitation accepted')
+        
         
