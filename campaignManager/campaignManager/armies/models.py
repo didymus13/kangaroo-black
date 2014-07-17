@@ -26,7 +26,7 @@ class Faction(Common):
 class Army(Common):
     user        = models.ForeignKey(User)
     faction     = models.ForeignKey(Faction, blank=True, null=True)
-    campaign    = models.ForeignKey(Campaign, blank=True)
+    campaign    = models.ForeignKey(Campaign, blank=True, null=True)
     blurb       = models.TextField(blank=True)
     armylist    = models.TextField(blank=True)
     public_list = models.BooleanField(default=True)

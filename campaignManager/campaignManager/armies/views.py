@@ -23,6 +23,13 @@ def index(request, slug=None):
         'user': request.user,
         'armies': armies
     })
+
+@login_required
+def my_index(request):
+    return render(request, 'armies_index.html', {
+        'user': request.user,
+        'armies': Army.objects.filter(user=request.user)
+    })
     
 @login_required
 def edit(request, pk=None):
