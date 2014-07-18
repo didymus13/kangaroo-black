@@ -3,6 +3,7 @@ from models import *
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
 
 # Create your views here.
 def detail(request, pk):
@@ -15,6 +16,7 @@ def detail(request, pk):
     })
 
 def index(request, status=None, slug=None):
+    print 'index'
     campaigns = Campaign.objects.all()
     if status: campaigns = campaigns.filter(status=status)
     if slug: campaigns = campaigns.filter(game__slug=slug)
@@ -22,6 +24,15 @@ def index(request, status=None, slug=None):
     return render(request, 'campaigns_index.html', {
         'campaigns': campaigns,
         'user': request.user,
+    })
+
+@login_required
+def my_index(request):
+    campaigns = Campaign.objects.filter(Q(moderator=request.user) | Q(participants=request.user)) 
+    print campaigns
+    return render(request, 'campaigns_index.html', {
+        'campaigns': campaigns,
+        'user': request.user
     })
 
 @login_required

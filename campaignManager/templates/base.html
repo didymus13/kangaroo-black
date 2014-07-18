@@ -51,7 +51,7 @@
                                 {% game_links campaign_url %}
                                 {% if user and not user.is_anonymous %}
                                     <li class='divider'></li>
-                                    <li><a href="#">My Campaigns</a></li>
+                                    <li><a href="{% url 'campaigns:mine' %}">My Campaigns</a></li>
                                     <li><a href="{% url 'campaigns:new' %}">Start a new campaign</a></li>
                                 {% endif %}
                             </ul>
@@ -66,7 +66,7 @@
                                 {% game_links armies_url %}
                                 {% if user and not user.is_anonymous %}
                                     <li class="divider"></li>
-                                    <li><a href="#">My Armies</a></li>
+                                    <li><a href="{% url 'armies:mine' %}">My Armies</a></li>
                                     <li><a href="{% url 'armies:new' %}">Create a new Army</a></li>
                                 {% endif %}
                             </ul>
@@ -78,7 +78,11 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="/profile">My Profile</a></li>
+                                <li>
+                                    <a href="{% url 'profile:detail' user.username %}">
+                                        My Profile
+                                    </a>
+                                </li>
                                 <li><a href="/logout/?next=/">Logout</a></li>
                             </ul>
                         </li>
@@ -118,8 +122,8 @@
         </div><!-- .container-fluid -->
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="{% static "js/bootstrap.min.js" %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
     </body>
 </html>

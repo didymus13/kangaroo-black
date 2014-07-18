@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^(?P<pk>[0-9]+)/delete/$', views.delete, name='delete'),
     url(r'^new/$', views.edit, name='new'),
     
-    url(r'^$', views.index, name='index'),
+    url(r'^mine/$', views.my_index, name='mine'),
     url(r'^(?P<slug>.+)/$', views.index, name='index'),
+    url(r'^$', views.index, name='index'),
 )

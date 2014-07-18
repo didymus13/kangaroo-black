@@ -24,12 +24,15 @@ class Faction(Common):
     slug = models.SlugField(null=True)
     
 class Army(Common):
-    user        = models.ForeignKey(User)
-    faction     = models.ForeignKey(Faction, blank=True, null=True)
-    campaign    = models.ForeignKey(Campaign, blank=True)
-    blurb       = models.TextField(blank=True)
-    armylist    = models.TextField(blank=True)
+    user = models.ForeignKey(User)
+    faction = models.ForeignKey(Faction, blank=True, null=True)
+    campaign = models.ForeignKey(Campaign, blank=True, null=True)
+    blurb = models.TextField(blank=True)
+    armylist = models.TextField(blank=True)
     public_list = models.BooleanField(default=True)
+    win = models.PositiveIntegerField(default=0)
+    draw = models.PositiveIntegerField(default=0)
+    loss = models.PositiveIntegerField(default=0)
     
     class Meta:
         verbose_name_plural = 'armies'

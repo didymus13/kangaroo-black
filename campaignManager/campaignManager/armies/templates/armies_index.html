@@ -20,7 +20,11 @@
             {% for army in armies %}
             <tr>
                 <td><a href="{% url 'armies:detail' army.id %}">{{ army.name }}</a></td>
-                <td><a href="#">{{ army.user }}</a></td>
+                <td>
+                    <a href="{% url 'profile:detail' army.user.username %}">
+                        {{ army.user }}
+                    </a>
+                </td>
                 <td>
                     <a href="{% url 'armies:index' army.faction.game.slug %}">
                         {{ army.faction.game }}
