@@ -27,7 +27,7 @@ class InvitationTestCase(TestCase):
         response = self.c.get(url)
         self.assertContains(response, 'email')
         
-        response = self.c.post(url, {'campaign':'1', 'email':'player@example.com'}, follow=True)
+        response = self.c.post(url, {'email':'player@example.com'}, follow=True)
         self.assertNotContains(response, 'Invitation not saved')
         self.assertNotContains(response, 'Invalid header detected')
         self.assertEqual(len(mail.outbox), 1)
@@ -35,6 +35,7 @@ class InvitationTestCase(TestCase):
         
         invitation = Invitation.objects.get(email='player@example.com')
         self.assertEqual(invitation.campaign, campaign, 'Campaigns do not match')
+        self.assertEqual(invitation.email, 'player@example.com')
         
     def test_accept_invitation(self):
         uid = uuid.uuid4()

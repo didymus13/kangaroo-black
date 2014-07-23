@@ -1,0 +1,10 @@
+--- Wargames campaign invitation for {{ campaign }} ----
+
+You have been invited to join the {{ campaign }} campaign by 
+{{ campaign.moderator }}.
+
+<a href="http://{{ host }}{% url 'invitations:accept' invitation.uuid %}">Click to accept</a> or 
+paste the following URL in your browser's address bar: 
+http://{{ host }}{% url 'invitations:accept' invitation.uuid %}
+
+Note: You will need to log in to accept this invitation.

@@ -21,17 +21,40 @@
     <div class="col-xs-12">{{ campaign.get_status_value }}</div>
     <div class="col-xs-12">{{ campaign.blurb|markdown }}</div>
 </div>
-<div class="table-responsive">
-    <table class="table table-striped table-hove">
+<div class='row'>
+    <table class="table table-striped table-hover cols-xs-8">
         <caption>Participants</caption>
-        {% for army in campaign.armies %}
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>General</th>
+            </tr>
+        </thead>
+        {% for participant in campaign.participants.all %}
         <tr>
-            <td><a href="{% url 'armies:detail' army.pk %}" >{{army}}</a></td>
-            <td><a href="{% url 'profile:detail' army.user.pk %}" >{{army}}</a></td>
+            <td>
+            {% for army in participant.army_set.all %}
+                {% if army.campaign == campaign %}
+                <a href="{% url 'armies:detail' army.pk %}">{{ army }}</a>
+                {% endif %}
+            {% endfor %}
+            </td>
+            <td><a href="{% url 'profile:detail' participant.username %}" >{{participant}}</a></td>
         </tr>
         {% empty %}
         <tr><td>There are currently no participants in this campaign</td></tr>
         {% endfor %}
+        {% if editable %}
+        <tfoot>
+            <tr>
+                <td>
+                    <a href="{% url 'invitations:send' campaign.pk %}" class='btn btn-primary'>
+                        Extend an invitation to this campaign
+                    </a>
+                </td>
+            </tr>
+        </tfoot>
+        {% endif %}
     </table>
 </div>
 {% endblock %}
