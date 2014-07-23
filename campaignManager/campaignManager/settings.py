@@ -45,7 +45,8 @@ INSTALLED_APPS = (
     'django_countries',
     'markdown_deux',
     'campaignManager.cmtags',
-    'campaignManager.invitations'
+    'campaignManager.invitations',
+    'widget_tweaks',
 )
 
 MIDDLEWARE_CLASSES = (
