@@ -40,21 +40,28 @@ class Campaign(models.Model):
     
     def is_owned_by(self, user):
         return self.moderator == user
-
-class CampaignMeta(models.Model):
-    campaign    = models.ForeignKey(Campaign)
-    label       = models.CharField(max_length=128)
-    value       = models.CharField(max_length=254)
-    
-    def __unicode__(self):
-        return self.label
-    
-    class Meta:
-        verbose_name_plural = 'campaign meta'
         
 class CampaignForm(ModelForm):
     from campaignManager.armies.models import Game
     class Meta:
         model = Campaign
         exclude = ['moderator', 'participants']
+
+class CampaignArmy(models.Model):
+    army = models.OneToOneField('armies.Army')
+    campaign = models.ForeignKey(Campaign)
+    campaign_points = models.IntegerField(default=0)
+    victory_points = models.IntegerField(default=0)
+    currency = models.IntegerField(default=0)
+    
+    def __unicode__(self):
+        return army
+    
+    def finish_game(self, cp=0, vp_for=0, vp_against=0, currency=0):
+        self.campaign_points += cp
+        self.victory_points += (vp_for - vp_against)
+        self.currency += currency
+    
+    class Meta:
+        ordering = ['-campaign_points', '-victory_points', '-currency', 'army']
       
