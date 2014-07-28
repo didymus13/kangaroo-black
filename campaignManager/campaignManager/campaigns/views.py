@@ -72,6 +72,7 @@ def edit(request, pk=None):
         'form': form,
         'user': request.user,
         'delete': delete,
+        'page_title': 'Edit Campaign',
     })
 
 @login_required

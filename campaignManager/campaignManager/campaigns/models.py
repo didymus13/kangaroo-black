@@ -30,7 +30,6 @@ class Campaign(models.Model):
     country = CountryField(blank=True)
     online_only = models.BooleanField(default=False)
     blurb = models.TextField(blank=True)
-    turn = models.CharField(max_length=64, default=1, blank=True)
     status = models.PositiveSmallIntegerField(
         default=STATUS_SETUP, 
         choices=CAMPAIGN_STATUS_FLAGS, )
