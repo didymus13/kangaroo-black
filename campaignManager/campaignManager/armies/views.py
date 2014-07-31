@@ -7,7 +7,7 @@ from django.contrib import messages
 
 # Create your views here.
 def detail(request, pk):
-    army = get_object_or_404(Army, pk=pk, public_list=True)
+    army = get_object_or_404(Army, pk=pk)
 
     return render(request, 'armies_detail.html', {
         'user': request.user,
@@ -16,7 +16,7 @@ def detail(request, pk):
     })
 
 def index(request, slug=None):
-    armies = Army.objects.filter(public_list=True)
+    armies = Army.objects.all()
     if slug: armies = armies.filter(faction__game__slug=slug)
     
     return render(request, 'armies_index.html', {

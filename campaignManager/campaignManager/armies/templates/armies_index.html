@@ -39,6 +39,13 @@
             <tr><td>No armies found</td></tr>
             {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <a href="{% url 'armies:new' %}">Create a new Army</a>
+                </td>
+            </tr>
+        </tfoot>
     </table>
 </div> <!-- .table-responsive -->
 {% endblock %}
