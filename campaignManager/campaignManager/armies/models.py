@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
 
-class Common(models.Model):
+class ArmiesCommon(models.Model):
     name        = models.CharField(max_length=128)
     
     class Meta:
@@ -12,25 +12,21 @@ class Common(models.Model):
     def __unicode__(self):
         return self.name
 
-class Game(Common):
+class Game(ArmiesCommon):
     slug = models.SlugField(null=True)
     
     class Meta:
         ordering = ['name']
 
-class Faction(Common):
+class Faction(ArmiesCommon):
     game = models.ForeignKey(Game)
     slug = models.SlugField(null=True)
     
-class Army(Common):
+class Army(ArmiesCommon):
     user = models.ForeignKey(User)
     faction = models.ForeignKey(Faction, blank=True, null=True)
     blurb = models.TextField(blank=True)
     armylist = models.TextField(blank=True)
-    public_list = models.BooleanField(default=True)
-    win = models.PositiveIntegerField(default=0)
-    draw = models.PositiveIntegerField(default=0)
-    loss = models.PositiveIntegerField(default=0)
     
     class Meta:
         verbose_name_plural = 'armies'

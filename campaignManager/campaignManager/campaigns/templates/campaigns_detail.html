@@ -30,31 +30,35 @@
                 <th>General</th>
             </tr>
         </thead>
-        {% for participant in campaign.participants.all %}
+        {% for campaign_army in campaign.campaign_army_set.all %}
         <tr>
             <td>
-            {% for army in participant.army_set.all %}
-                {% if army.campaign == campaign %}
-                <a href="{% url 'armies:detail' army.pk %}">{{ army }}</a>
-                {% endif %}
-            {% endfor %}
+                <a href="{% url 'profile:detail' campaign_army.army.user.username %}" >
+                    {{ campaign_army.army.user }}
+                </a>
             </td>
-            <td><a href="{% url 'profile:detail' participant.username %}" >{{participant}}</a></td>
         </tr>
         {% empty %}
-        <tr><td>There are currently no participants in this campaign</td></tr>
+        <tr><td>No armies are registered at this time</td></tr>
         {% endfor %}
-        {% if editable %}
         <tfoot>
             <tr>
+            {% if editable %}
                 <td>
                     <a href="{% url 'invitations:send' campaign.pk %}" class='btn btn-primary'>
                         Extend an invitation to this campaign
                     </a>
                 </td>
-            </tr>
+            {% endif %}
+            {% if is_participant %}
+            <td>
+                <a href="{% url 'campaigns:new_army' campaign.pk %}" class="btn btn-primary">
+                    Create an army for this campaign
+                </a>
+            </td>
+            {% endif %}
+        </tr>
         </tfoot>
-        {% endif %}
     </table>
 </div>
 {% endblock %}

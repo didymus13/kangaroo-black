@@ -39,6 +39,9 @@ class Campaign(models.Model):
     
     def is_owned_by(self, user):
         return self.moderator == user
+    
+    def is_participant(self, user):
+        return user in self.participants.all()
         
 class CampaignForm(ModelForm):
     from campaignManager.armies.models import Game
@@ -54,7 +57,7 @@ class CampaignArmy(models.Model):
     currency = models.IntegerField(default=0)
     
     def __unicode__(self):
-        return army
+        return self.army.name
     
     def finish_game(self, cp=0, vp_for=0, vp_against=0, currency=0):
         self.campaign_points += cp
@@ -63,4 +66,10 @@ class CampaignArmy(models.Model):
     
     class Meta:
         ordering = ['-campaign_points', '-victory_points', '-currency', 'army']
+        verbose_name_plural = 'campaign armies'
+        
+class CampaignArmyForm(ModelForm):
+    class Meta:
+        model = CampaignArmy
+        exclude = ['campaign', 'campaign_points', 'victory_points', 'currency']
       
