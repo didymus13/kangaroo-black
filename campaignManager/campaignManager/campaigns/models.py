@@ -42,6 +42,12 @@ class Campaign(models.Model):
     
     def is_participant(self, user):
         return user in self.participants.all()
+    
+    def has_army(self, user):
+        for campaignArmy in self.campaignarmy_set.all():
+            if campaignArmy.army.user == user:
+                return True
+        return False
         
 class CampaignForm(ModelForm):
     from campaignManager.armies.models import Game

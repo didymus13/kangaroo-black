@@ -12,8 +12,7 @@
                 <a href="{% url 'campaigns:edit' campaign.pk %}" class="btn btn-default">Edit</a>
             {% endif %}
         </h1>
-        <h3>by {{campaign.moderator}}</h3>
-        
+        <h3>by {{campaign.moderator}}</h3>      
     </div>
 </div>
 <div class="row">
@@ -30,8 +29,13 @@
                 <th>General</th>
             </tr>
         </thead>
-        {% for campaign_army in campaign.campaign_army_set.all %}
+        {% for campaign_army in campaign.campaignarmy_set.all %}
         <tr>
+            <td>
+                <a href="{% url 'armies:detail' campaign_army.army.pk %}">
+                    {{ campaign_army }}
+                </a>
+            </td>
             <td>
                 <a href="{% url 'profile:detail' campaign_army.army.user.username %}" >
                     {{ campaign_army.army.user }}
@@ -50,7 +54,7 @@
                     </a>
                 </td>
             {% endif %}
-            {% if is_participant %}
+            {% if is_participant and not has_army %}
             <td>
                 <a href="{% url 'campaigns:new_army' campaign.pk %}" class="btn btn-primary">
                     Create an army for this campaign

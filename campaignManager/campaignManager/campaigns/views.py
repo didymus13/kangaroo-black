@@ -15,7 +15,8 @@ def detail(request, pk):
         'user': request.user,
         'editable': campaign.is_owned_by(request.user),
         'user_army': user_army,
-        'is_participant': campaign.is_participant(request.user)
+        'is_participant': campaign.is_participant(request.user),
+        'has_army': campaign.has_army(request.user)
     })
 
 def index(request, status=None, slug=None):
@@ -111,7 +112,7 @@ def new_campaign_army(request, pk):
                 army=army, 
                 campaign=campaign)
             campaign_army.save()
-            return redirect('campaigns:army_detail', army.pk)
+            return redirect('armies:detail', army.pk)
     
     else:
         form = ArmyForm()
