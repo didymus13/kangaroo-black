@@ -14,6 +14,7 @@ class ArmiesCommon(models.Model):
 
 class Game(ArmiesCommon):
     slug = models.SlugField(null=True)
+    name_short = models.CharField(max_length=4)
     
     class Meta:
         ordering = ['name']
@@ -21,6 +22,7 @@ class Game(ArmiesCommon):
 class Faction(ArmiesCommon):
     game = models.ForeignKey(Game)
     slug = models.SlugField(null=True)
+    name_short = models.CharField(max_length=4)
     
 class Army(ArmiesCommon):
     user = models.ForeignKey(User)

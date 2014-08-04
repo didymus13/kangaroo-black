@@ -9,7 +9,7 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Game</th>
+                <th class="hidden-xs">Game</th>
                 <th class="hidden-xs">Moderator</th>
                 <th class="hidden-xs"># Players</th>
                 <th class="hidden-xs">Status</th>
@@ -22,9 +22,12 @@
                 <td>
                     <a href="{% url 'campaigns:detail' campaign.pk %}">
                         {{ campaign.name }}
+                        <span class='visible-xs'>
+                            ( {{ campaign.game.name_short }} )
+                        </span>
                     </a>
                 </td>
-                <td>
+                <td class="hidden-xs">
                     <a href="{% url 'campaigns:index' campaign.game.slug %}">
                     {{ campaign.game }}
                     </a>
