@@ -1,17 +1,18 @@
-{% extends 'base.html' %}
+{% extends 'campaigns_base.html' %}
 
 {% block title %}{{ campaign.game|default:'All' }} campaigns{% endblock %}
 
 {% block main %}
+
 <div class="table-responsive">
     <table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Game</th>
-                <th>Moderator</th>
-                <th># Players</th>
-                <th>Status</th>
+                <th class="hidden-xs">Moderator</th>
+                <th class="hidden-xs"># Players</th>
+                <th class="hidden-xs">Status</th>
               
             </tr>
         </thead>
@@ -28,13 +29,13 @@
                     {{ campaign.game }}
                     </a>
                 </td>
-                <td>
+                <td class="hidden-xs">
                     <a href="{% url 'profile:detail' campaign.moderator.username %}">
                         {{ campaign.moderator }}
                     </a>
                 </td>
-                <td>{{ campaign.player_count|default:0 }}</td>
-                <td>{{ campaign.get_status_display }}</td>
+                <td class="hidden-xs">{{ campaign.player_count|default:0 }}</td>
+                <td class="hidden-xs">{{ campaign.get_status_display }}</td>
             </tr>
             {% empty %}
             <tr><td>No campaigns found</td></tr>
