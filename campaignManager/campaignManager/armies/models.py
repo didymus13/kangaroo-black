@@ -4,7 +4,7 @@ from django.forms import ModelForm
 from django.core.exceptions import ValidationError
 
 class ArmiesCommon(models.Model):
-    name        = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
     
     class Meta:
         abstract = True

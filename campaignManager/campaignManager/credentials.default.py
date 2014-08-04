@@ -8,4 +8,4 @@ SOCIAL_AUTH_TWITTER_KEY = ''
 SOCIAL_AUTH_TWITTER_SECRET = ''
 
 SECRET_KEY = ''
-EMAIL_BACKEND = ''
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

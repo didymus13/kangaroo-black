@@ -4,18 +4,14 @@
 {% block title %}{{ army.name }}{% endblock %}
 
 {% block main %}
-<div class="row">
-    <div class="col-sx-12">
-        <h1>
-            {{ army.name }}
-            {% if editable %}
-                <a href="{% url 'armies:edit' army.pk %}" class="btn btn-default">Edit</a>
-            {% endif %}
-        </h1>
-        <h3>by {{army.user.username}}</h3>
-        
-    </div>
-</div>
+<h1>
+    {{ army.name }}
+    {% if editable %}
+        <a href="{% url 'armies:edit' army.pk %}" class="btn btn-default">Edit</a>
+    {% endif %}
+</h1>
+<h3>by {{army.user.username}}</h3>
+
 <div class="row">
     <div class="col-xs-12">{{ army.faction.game.name }}</div>
     <div class="col-xs-12">{{ army.faction.name }}</div>
