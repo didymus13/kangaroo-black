@@ -2,9 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
+from campaignManager.settings import UPLOAD_PATH
 
 class ArmiesCommon(models.Model):
-    name        = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
+    photo = models.FileField(blank=True, null=True, upload_to=UPLOAD_PATH)
     
     class Meta:
         abstract = True

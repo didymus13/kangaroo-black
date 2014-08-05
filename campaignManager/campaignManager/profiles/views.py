@@ -5,6 +5,7 @@ from campaignManager.profiles.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from campaignManager.armies.models import *
+from campaignManager.campaigns.models import *
 
 def home(request):
    return render(request, 'home.html')
@@ -29,6 +30,7 @@ def edit(request, username):
     return render(request, 'form.html', {
         'user': request.user,
         'form': form,
+        'page_title': user
     })
     
 def detail(request, username):
