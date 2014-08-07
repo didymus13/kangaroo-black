@@ -20,7 +20,7 @@ def edit(request, username):
         return redirect('profiles:detail', request.user.username)
     
     if request.method == 'POST':
-        form = ProfileForm(request.POST, instance=profile)
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
             return redirect('profile:detail', username=user.username)

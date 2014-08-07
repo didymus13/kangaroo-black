@@ -34,7 +34,7 @@ class Campaign(models.Model):
     status = models.PositiveSmallIntegerField(
         default=STATUS_SETUP, 
         choices=CAMPAIGN_STATUS_FLAGS, )
-    photo = models.FileField(blank=True, null=True, upload_to=UPLOAD_PATH)
+    photo = models.ImageField(blank=True, null=True, upload_to=UPLOAD_PATH)
     
     def __unicode__(self):
         return self.name

@@ -96,7 +96,10 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     '/var/www/static/',
 )
-UPLOAD_PATH = '/tmp/uploaded_files'
+
+UPLOAD_PATH = 'photos/%Y/%m/%d'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/uploads')
+MEDIA_URL = '/static/uploads/'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
    'django.contrib.auth.context_processors.auth',

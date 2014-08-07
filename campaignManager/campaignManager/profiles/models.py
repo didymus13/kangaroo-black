@@ -11,10 +11,10 @@ class Profile(models.Model):
     country = CountryField(null=True, blank=True)
     games = models.ManyToManyField('armies.Game')
     bio = models.TextField(blank=True)
-    photo = models.FileField(blank=True, null=True, upload_to=UPLOAD_PATH)
+    photo = models.ImageField(blank=True, null=True, upload_to=UPLOAD_PATH)
     
     def __unicode__(self):
-        return self.user
+        return self.user.username
     
     def is_owned_by(self, user):
         print self.user == user
@@ -23,4 +23,4 @@ class Profile(models.Model):
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
-        fields = ['location', 'country', 'bio']
+        exclude = ['user',]
