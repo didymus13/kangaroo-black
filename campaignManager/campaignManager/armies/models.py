@@ -2,9 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
+from campaignManager.settings import UPLOAD_PATH
 
 class ArmiesCommon(models.Model):
-    name        = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
+    photo = models.ImageField(blank=True, null=True, upload_to=UPLOAD_PATH)
     
     class Meta:
         abstract = True
@@ -14,12 +16,14 @@ class ArmiesCommon(models.Model):
 
 class Game(ArmiesCommon):
     slug = models.SlugField(null=True)
+    name_short = models.CharField(max_length=5)
     
     class Meta:
         ordering = ['name']
 
 class Faction(ArmiesCommon):
     game = models.ForeignKey(Game)
+    name_short = models.CharField(max_length=5)
     slug = models.SlugField(null=True)
     
 class Army(ArmiesCommon):

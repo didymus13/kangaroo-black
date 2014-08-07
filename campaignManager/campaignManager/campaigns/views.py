@@ -55,9 +55,9 @@ def edit(request, pk=None):
             
     if request.method == 'POST':
         if pk:
-            form = CampaignForm(request.POST, instance=campaign)
+            form = CampaignForm(request.POST, request.FILES, instance=campaign)
         else:
-            form = CampaignForm(request.POST)
+            form = CampaignForm(request.POST, request.FILES)
         if form.is_valid():
             campaign = form.save(commit=False)
             campaign.moderator = request.user
@@ -103,7 +103,7 @@ def new_campaign_army(request, pk):
         return redirect('campaign:detail', pk)
     
     if request.method == 'POST':
-        form = ArmyForm(request.POST)
+        form = ArmyForm(request.POST, request.FILES)
         if form.is_valid():
             army = form.save(commit=False)
             army.user = request.user

@@ -12,7 +12,9 @@
             <a href="{% url 'profile:edit' profile.user.username %}" class='btn btn-default'>Edit</a>
             {% endif %}
         </h1>
-        <img src="http://placehold.it/207x310/&text=photo" class="col-xs-12" />
+        {% if profile.photo %}
+        <img src="{{ profile.photo.url }}" class="col-xs-12" />
+        {% endif %}
     </div>
     <div class="col-xs-6 col-sm-9 col-md-10">
         <h1 class="hidden-xs">

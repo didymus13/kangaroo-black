@@ -7,7 +7,7 @@
 
 <h1>{{ page_title|default:'Untitled' }}</h1>
 
-<form method="POST" action="" class="form-horizontal" role="form">
+<form method="POST" action="" class="form-horizontal" role="form" enctype="multipart/form-data">
     {% csrf_token %}
 
     {% for field in form %}
