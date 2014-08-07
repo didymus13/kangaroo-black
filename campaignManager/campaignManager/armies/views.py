@@ -48,9 +48,9 @@ def edit(request, pk=None):
             
     if request.method == 'POST':
         if pk:
-            form = ArmyForm(request.POST, instance=army)
+            form = ArmyForm(request.POST, request.FILES, instance=army)
         else:
-            form = ArmyForm(request.POST)
+            form = ArmyForm(request.POST, request.FILES)
         if form.is_valid():
             army = form.save(commit=False)
             army.user = request.user
@@ -68,6 +68,7 @@ def edit(request, pk=None):
         'form': form,
         'user': request.user,
         'delete': delete,
+        'page_title': 'Edit army'
     })
     
 @login_required
