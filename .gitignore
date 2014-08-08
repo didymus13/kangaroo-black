@@ -57,3 +57,4 @@ db.sqlite3
 /nbproject/
 /campaignManager/campaignManager/credentials.py
 /static/uploads/
+.sass-cache
