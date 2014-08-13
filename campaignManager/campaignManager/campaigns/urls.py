@@ -10,6 +10,8 @@ urlpatterns = patterns('',
     url(r'^(?P<pk>[0-9]+)/edit/$', views.edit, name='edit'),
     url(r'^(?P<pk>[0-9]+)/delete/$', views.delete, name='delete'),
     url(r'^(?P<pk>[0-9]+)/armies/new/$', views.new_campaign_army, name='new_army'),
+    url(r'^(?P<pk>[0-9]+)/standings/$', views.standings, name='standings'),
+    url(r'^(?P<pk>[0-9]+)/start/$', views.standings, name='start'),
     url(r'^new/$', views.edit, name='new'),
     
     url(r'^mine/$', views.my_index, name='mine'),

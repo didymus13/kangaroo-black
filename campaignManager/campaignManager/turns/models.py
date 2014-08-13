@@ -4,12 +4,12 @@ import django.dispatch
 
 # Create your models here.
 class Turn(models.Model):
-    label = models.CharField(max_length=64)
+    label = models.CharField(max_length=64, help_text='eg: Summer 1666, Stardate 12345.6')
     created = models.DateTimeField(auto_now_add=True)
-    campaign = models.ForeignKey('campaigns.Campaign')
+    campaign = models.ForeignKey('campaigns.Campaign', )
     
     def __unicode__(self):
-        return label
+        return self.label
     
     class Meta:
         ordering = ['-pk']
@@ -27,4 +27,4 @@ class Challenge(models.Model):
     turn = models.ForeignKey(Turn)
     participants = models.ManyToManyField('campaigns.CampaignArmy')
     winner = models.ForeignKey('campaigns.CampaignArmy', blank=True, related_name='winner')
-    status = models.PositiveIntegerField(choices=STATUS)
+    status = models.PositiveIntegerField(choices=STATUS, default=PENDING)

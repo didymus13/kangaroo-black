@@ -18,6 +18,7 @@
                 <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
                 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
               <![endif]-->
+        {% block custom_css %}{% endblock %}
     </head>
     <body>
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -58,7 +59,7 @@
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a href="/armies" class="dropdown-toggle" data-toggle="dropdown">
+                            <a href="{% url 'armies:index' %}" class="dropdown-toggle" data-toggle="dropdown">
                                 Armies <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
@@ -119,7 +120,9 @@
             
             <div class="row">
                 <div class="col-xs-12">
-                    {% block main %}Content goes here{% endblock %}
+                    {% block main_wrapper %}
+                        {% block main %}Content goes here{% endblock %}
+                    {% endblock %}
                 </div>
             </div>
         </div><!-- .container-fluid -->
@@ -128,5 +131,6 @@
         <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        {% block custom_js %}{%endblock%}
     </body>
 </html>

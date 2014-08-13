@@ -1,1 +1,67 @@
 {% extends 'base.html' %}
+
+{% block main_wrapper %}
+    
+    {% if campaign %}
+    <div class="page-header" />
+        {% if campaign.photo %}
+        <div class="media" >
+            <img src="{{ campaign.photo.url }}" alt="{{ campaign.name }}" class="media col-xs-12"/>
+        </div>
+        {% endif %}
+        
+        <nav class="nav navbar-default" role="nav">
+            <div class="navbar-header">
+                <div class="navbar-header ">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#campaign-menu-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'campaigns:detail' campaign.pk %}">
+                        {{ campaign.name }}
+                    </a>
+                </div>
+            </div>
+            <div class="navbar-collapse collapse" id="campaign-menu-collapse" >
+                <ul class="nav navbar-nav" >
+                    <li>
+                        <a href="{% url 'campaigns:detail' campaign.pk %}">
+                            Introduction
+                        </a>
+                    </li>
+                    <li><a href="{% url 'campaigns:standings' campaign.pk %}">Player Standings</a></li>
+                    <li><a href="#">Challenges</a></li>
+                    {% if editable %}
+                    <li class="dropdown">
+                        <a href="{% url 'campaigns:edit' campaign.pk %}" class="dropdown-toggle" data-toggle="dropdown">
+                            Settings <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="{% url 'turns:new_turn' campaign.pk %}">
+                                {% if current_turn %}
+                                    Finish Turn
+                                {% else %}
+                                    Start Campaign
+                                {% endif %}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'campaigns:edit' campaign.pk %}">
+                                    Edit Campaign Info
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </div>
+    {% endif %}
+    
+    {% block main %}Content goes here{% endblock %}
+    
+{% endblock %}

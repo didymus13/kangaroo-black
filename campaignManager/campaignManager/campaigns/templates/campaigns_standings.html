@@ -1,0 +1,58 @@
+{% extends 'campaigns_base.html' %}
+
+{% block main %}
+<div class='panel panel-default'>
+    <div class='panel-heading'>{{ campaign.name }} standings</div>
+    <table class='table table-striped table-hover'>
+        <thead>
+            <tr>
+                <th>Army</th>
+                <th class="hidden-xs">General</th>
+                <th class="hidden-xs">Faction</th>
+                <th>
+                    <span class='visible-xs-inline'>CP</span>
+                    <span class='hidden-xs'>Campaign Points</span>
+                </th>
+                <th>
+                    <span class='visible-xs-inline'>VP</span>
+                    <span class='hidden-xs'>Victory Points</span>
+                </th>
+                <th class='hidden-xs'>
+                    <span class='visible-xs-inline'>Res</span>
+                    <span class='hidden-xs'>Resources</span>
+                </th>
+                {% if user.is_authenticated and is_participant and turn %}
+                <th></th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for c_army in campaign.campaignarmy_set.all %}
+            <tr>
+                <td>
+                    <a href="{% url 'armies:detail' c_army.army.pk %}">
+                        {{ c_army.army.name }}
+                    </a>
+                </td>
+                <td class="hidden-xs">
+                    <a href="{% url 'profile:detail' c_army.army.user %}">
+                        {{ c_army.army.user }}
+                    </a>
+                </td>
+                <td class="hidden-xs">{{ c_army.army.faction }}</td>
+                <td>{{ c_army.campaign_points }}</td>
+                <td>{{ c_army.victory_points }}</td>
+                <td class='hidden-xs'>{{ c_army.currency }}</td>
+                {% if user.is_authenticated and is_participant and turn %}
+                <td>
+                    <a href="{% url 'turns:challenge_new' turn.pk user.pk c_army.army.user.pk %}" class="btn btn-primary">
+                        Challenge!
+                    </a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
