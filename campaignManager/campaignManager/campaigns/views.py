@@ -11,15 +11,14 @@ def detail(request, pk):
     campaign = get_object_or_404(Campaign, pk=pk)
     user_army = CampaignArmy.objects.filter(
             army__user=request.user.id, campaign=campaign)
-    current_turn = campaign.turn_set.all();
+    
     return render(request, 'campaigns_detail.html', {
         'campaign': campaign,
         'user': request.user,
         'editable': campaign.is_owned_by(request.user),
         'user_army': user_army,
         'is_participant': campaign.is_participant(request.user),
-        'has_army': campaign.has_army(request.user),
-        'turn': current_turn 
+        'has_army': campaign.has_army(request.user), 
     })
 
 def index(request, status=None, slug=None):
@@ -131,7 +130,7 @@ def standings(request, pk):
     turns = campaign.turn_set.all()
     current_turn = False
     if turns:
-        current_turn = turns[:0].get()
+        current_turn = turns[:0]
     
     return render(request, 'campaigns_standings.html', {
         'user': request.user,

@@ -40,7 +40,12 @@
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a href="{% url 'turns:new_turn' campaign.pk %}">
+                                <a href="{% url 'invitations:send' campaign.pk %}">
+                                    Issue Invitation
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'turns:create' campaign.pk %}">
                                 {% if current_turn %}
                                     Finish Turn
                                 {% else %}

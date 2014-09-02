@@ -1,10 +1,14 @@
 from django.db import models
 from django.forms import ModelForm
 import django.dispatch
+from django.core.mail import send_mail, BadHeaderError, EmailMultiAlternatives
+import uuid
+from django.template import Context
 
 # Create your models here.
 class Turn(models.Model):
     label = models.CharField(max_length=64, help_text='eg: Summer 1666, Stardate 12345.6')
+    description = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     campaign = models.ForeignKey('campaigns.Campaign', )
     
@@ -17,14 +21,4 @@ class Turn(models.Model):
 class TurnForm(ModelForm):
     class Meta:
         model = Turn
-        fields = ['label', ]
-        
-class Challenge(models.Model):
-    PENDING = 10
-    COMPLETE = 100
-    STATUS = ((PENDING, 'pending'), (COMPLETE, 'complete'))
-    
-    turn = models.ForeignKey(Turn)
-    participants = models.ManyToManyField('campaigns.CampaignArmy')
-    winner = models.ForeignKey('campaigns.CampaignArmy', blank=True, related_name='winner')
-    status = models.PositiveIntegerField(choices=STATUS, default=PENDING)
+        exclude = ['campaign', 'created']
