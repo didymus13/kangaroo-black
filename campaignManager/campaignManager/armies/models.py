@@ -25,6 +25,7 @@ class Faction(ArmiesCommon):
     game = models.ForeignKey(Game)
     name_short = models.CharField(max_length=5)
     slug = models.SlugField(null=True)
+    name_short = models.CharField(max_length=4)
     
 class Army(ArmiesCommon):
     user = models.ForeignKey(User)

@@ -4,19 +4,21 @@ from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
+from campaignManager.turns.models import Turn
 
 # Create your views here.
 def detail(request, pk):
     campaign = get_object_or_404(Campaign, pk=pk)
     user_army = CampaignArmy.objects.filter(
-            army__user=request.user, campaign=campaign)
+            army__user=request.user.id, campaign=campaign)
+    
     return render(request, 'campaigns_detail.html', {
         'campaign': campaign,
         'user': request.user,
         'editable': campaign.is_owned_by(request.user),
         'user_army': user_army,
         'is_participant': campaign.is_participant(request.user),
-        'has_army': campaign.has_army(request.user)
+        'has_army': campaign.has_army(request.user), 
     })
 
 def index(request, status=None, slug=None):
@@ -123,3 +125,18 @@ def new_campaign_army(request, pk):
         'page_title': 'Create a new Campaign Army'
     })
     
+def standings(request, pk):
+    campaign = get_object_or_404(Campaign, pk=pk)
+    turns = campaign.turn_set.all()
+    current_turn = False
+    if turns:
+        current_turn = turns[:0]
+    
+    return render(request, 'campaigns_standings.html', {
+        'user': request.user,
+        'campaign': campaign,
+        'page_title': campaign.name + ' standings',
+        'editable': campaign.is_owned_by(request.user),
+        'is_participant': campaign.is_participant(request.user),
+        'current_turn': current_turn,
+    })

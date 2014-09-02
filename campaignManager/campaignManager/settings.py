@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'campaignManager.cmtags',
     'campaignManager.invitations',
     'widget_tweaks',
+    'campaignManager.turns',
 )
 
 MIDDLEWARE_CLASSES = (
