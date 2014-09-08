@@ -40,7 +40,6 @@ INSTALLED_APPS = (
     'campaignManager.armies',
     'campaignManager.profiles', 
     'campaignManager.campaigns',
-    'south',
     'social.apps.django_app.default',
     'django_countries',
     'markdown_deux',
