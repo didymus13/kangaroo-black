@@ -44,40 +44,10 @@ class Campaign(models.Model):
     
     def is_participant(self, user):
         return user in self.participants.all()
-    
-    def has_army(self, user):
-        for campaignArmy in self.campaignarmy_set.all():
-            if campaignArmy.army.user == user:
-                return True
-        return False
         
 class CampaignForm(ModelForm):
     from campaignManager.armies.models import Game
     class Meta:
         model = Campaign
         exclude = ['moderator', 'participants']
-
-class CampaignArmy(models.Model):
-    army = models.OneToOneField('armies.Army')
-    campaign = models.ForeignKey(Campaign)
-    campaign_points = models.IntegerField(default=0)
-    victory_points = models.IntegerField(default=0)
-    currency = models.IntegerField(default=0)
-    
-    def __unicode__(self):
-        return self.army.name
-    
-    def finish_game(self, cp=0, vp_for=0, vp_against=0, currency=0):
-        self.campaign_points += cp
-        self.victory_points += (vp_for - vp_against)
-        self.currency += currency
-    
-    class Meta:
-        ordering = ['-campaign_points', '-victory_points', '-currency', 'army']
-        verbose_name_plural = 'campaign armies'
-        
-class CampaignArmyForm(ModelForm):
-    class Meta:
-        model = CampaignArmy
-        exclude = ['campaign', 'campaign_points', 'victory_points', 'currency']
       

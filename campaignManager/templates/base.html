@@ -58,21 +58,7 @@
                                 {% endif %}
                             </ul>
                         </li>
-                        <li class="dropdown">
-                            <a href="{% url 'armies:index' %}" class="dropdown-toggle" data-toggle="dropdown">
-                                Armies <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="{% url 'armies:index' %}">All</a></li>
-                                {% url 'armies:index' as armies_url %}
-                                {% game_links armies_url %}
-                                {% if user and not user.is_anonymous %}
-                                    <li class="divider"></li>
-                                    <li><a href="{% url 'armies:mine' %}">My Armies</a></li>
-                                    <li><a href="{% url 'armies:new' %}">Create a new Army</a></li>
-                                {% endif %}
-                            </ul>
-                        </li>
+                        
                         {% if user and not user.is_anonymous %}
                         <li class="dropdown">
                             <a class="dowpdown-toggle" data-toggle="dropdown">

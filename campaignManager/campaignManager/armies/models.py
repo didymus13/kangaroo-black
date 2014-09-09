@@ -26,20 +26,3 @@ class Faction(ArmiesCommon):
     name_short = models.CharField(max_length=5)
     slug = models.SlugField(null=True)
     name_short = models.CharField(max_length=4)
-    
-class Army(ArmiesCommon):
-    user = models.ForeignKey(User)
-    faction = models.ForeignKey(Faction, blank=True, null=True)
-    blurb = models.TextField(blank=True)
-    armylist = models.TextField(blank=True)
-    
-    class Meta:
-        verbose_name_plural = 'armies'
-        
-    def is_owned_by(self, user):
-        return self.user == user
-        
-class ArmyForm(ModelForm):
-    class Meta:
-        model = Army
-        exclude = ['user']

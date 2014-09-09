@@ -5,8 +5,6 @@ from models import *
 class CommonAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name", )}
 
-admin.site.register(Army)
-
 class FactionAdmin(CommonAdmin):
     pass
 admin.site.register(Faction, FactionAdmin)
