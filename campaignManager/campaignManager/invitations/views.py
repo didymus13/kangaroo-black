@@ -1,14 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.core.mail import send_mail, BadHeaderError, EmailMultiAlternatives
-from django.template.loader import get_template
-from django.template import Context
 from django.contrib import messages
 from models import *
-from datetime import datetime, timedelta
-import uuid
+import sys
 
 # Create your views here.
 @login_required
@@ -21,33 +15,17 @@ def send_invitation(request, campaign_id):
 
     if request.method == 'POST':
         form = InvitationForm(request.POST)
-        if form.is_valid():
+        try:
             invitation = form.save(commit=False)
-            try: 
-                user = User.objects.get(email=invitation.email)
-            except User.DoesNotExist:
-                user = None
-                
-            invitation.user = user
-            invitation.uuid = uuid.uuid4()
             invitation.campaign = campaign
+            invitation.send(request)
             invitation.save()
-            
-            plaintext = get_template('email.txt')
-            htmly     = get_template('email.html')
-
-            d = Context({'campaign': campaign, 'invitation': invitation, 'host': request.META['HTTP_HOST'] })
-
-            subject, from_email, to = 'Campaign Invitations', campaign.moderator.email, invitation.email
-            text_content = plaintext.render(d)
-            html_content = htmly.render(d)
-            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-            msg.attach_alternative(html_content, "text/html")
-            msg.send()
-
             messages.add_message(request, messages.SUCCESS, 'Invitation sent')
+        except:
+            print sys.exc_info()
+            messages.add_message(request, messages.ERROR, 'Unexpected error:' + sys.exc_info())
+        finally:
             return redirect('campaigns:detail', campaign.pk)
-        messages.add_message(request, messages.ERROR, 'Invitation not sent');
     
     form = InvitationForm()
     return render(request, 'form.html', {
