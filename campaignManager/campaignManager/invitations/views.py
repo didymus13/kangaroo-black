@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from models import *
+from campaignManager.profiles.models import CampaignProfile
 import sys
 
 # Create your views here.
@@ -41,6 +42,7 @@ def accept_invitation(request, uuid):
     try:
         campaign.participants.add(request.user)
         campaign.save()
+        cp = CampaignProfile.objects.create(user=request.user, campaign=campaign)
         invitation.delete()
         messages.add_message(request, messages.SUCCESS, 
             campaign.name+' invitation accepted')

@@ -55,7 +55,7 @@ class CampaignProfile(models.Model):
         ordering = ['-cp', '-vp',]
     
     def __unicode__(self):
-        return self.profile
+        return self.user.username
     
     def _get_matches(self):
         return self.win + self.tie + self.loss

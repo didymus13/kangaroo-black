@@ -34,8 +34,6 @@ class Invitation(models.Model):
             raise
         
         return True
-        
-        
 
 class InvitationForm(ModelForm):
     class Meta:
