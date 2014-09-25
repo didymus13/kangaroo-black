@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>You have been Challenged by {{challenge.challenger}}!</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>
+            <h1>You have been Challenged by {{challenge.challenger}}!</h1>
+            <p>You have been challenged by {{challenge.challenger}} in 
+                {{challenge.turn}} of the {{challenge.turn.campaign}}.</p>
+            <a href="http://{{ host }}{% url 'turns:accept_challenge' chhallenge.uuid %}" class='btn btn-default'>
+                Accept the challenge
+            </a>
+            <p>Note: You will need to log in to accept this challenge.</p>
+        </div>
+    </body>
+</html>

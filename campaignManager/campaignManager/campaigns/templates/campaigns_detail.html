@@ -33,7 +33,11 @@
                 <td>{{ p.tie|default:0 }}</td>
                 <td>{{ p.loss|default:0 }}</td>
                 <td>{{ p.matches|default:0 }}</td>
-                <td><a href="#">Challenge!</a></td>
+                <td>
+                    <a href="{% url 'turns:challenge_send' campaign.current_turn.pk p.pk %}">
+                        Challenge!
+                    </a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

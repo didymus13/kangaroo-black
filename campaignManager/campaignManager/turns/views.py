@@ -4,6 +4,7 @@ from campaignManager.turns.models import *
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+import uuid, sys
 
 # Create your views here.
 
@@ -63,3 +64,46 @@ def edit(request, pk):
         'form': form,
         'page_title': 'editing turn:' + turn.label 
     })
+    
+@login_required
+def challenge_send(request, pk, recipient):
+    try:
+        challenge = Challenge.objects.create(
+            uuid=uuid.uuid4(), 
+            turn = get_object_or_404(Turn, pk=pk),
+            challenger = request.user,
+            recipient = get_object_or_404(User, pk=recipient)
+        )
+        challenge.send(request)
+        messages.add_message(request, errors.SUCCESS, 'Challenge issued!')
+    except:
+        messages.add_message(request, errors.ERROR, 'Challenge *not* issued')
+    finally:
+        return redirect('campaigns:detail', challenge.turn.campaign.pk)
+    
+
+@login_required
+def challenge_accept(request, uuid):
+    challenge = get_object_or_404(Challenge, uuid=uuid)
+    try:
+        challenge.accept(request.user)
+        messages.add_message(request, errors.SUCCESS, 'Challenge accepted.')
+    except:
+        messages.add_message(request, errors.ERROR, 
+            'An unknown error has occured. Challenge *not* accepted')
+    finally:
+        return redirect('campaigns:detail', challenge.turn.campaign.pk)
+    
+@login_required
+def challenge_complete(request, uuid, winner):
+    challenge = get_object_or_404(Challenge, uuid=uuid)
+    try:
+        winner = get_object_or_404(User, pk=winner)
+        challenge.complete(winner)
+        messages.add_message(request, error.SUCCESS, 
+            winner + " wins. Challenge complete")
+    except:
+        messages.add_message(request, errors.ERROR, 
+            'An unknown error occured. Challenge *not* completed')
+    finally:
+        return redirect('campaigns:detail', challenge.turn.campaign.pk)
