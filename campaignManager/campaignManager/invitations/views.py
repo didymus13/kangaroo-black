@@ -23,7 +23,6 @@ def send_invitation(request, campaign_id):
             invitation.save()
             messages.add_message(request, messages.SUCCESS, 'Invitation sent')
         except:
-            print sys.exc_info()
             messages.add_message(request, messages.ERROR, 'Unexpected error:' + sys.exc_info())
         finally:
             return redirect('campaigns:detail', campaign.pk)

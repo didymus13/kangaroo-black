@@ -51,25 +51,12 @@ class Challenge(models.Model):
         ordering = ['-turn', '-issued_date']
     
     def __unicode__(self):
-        return '%s vs %s' % [self.challenger, self.recipient]
+        return self.uuid
     
-    def send(self, request):
-        self.uuid = uuid.uuid4()
-        
-        plaintext = get_template('email.txt')
-        htmly = get_template('email.html')
-        d = Context({'challenge': self, 'host': request.META['HTTP_HOST'] })
-        text_content = plaintext.render(d)
-        html_content = htmly.render(d)
-        
-        try:
-            send_mail('You have been challenged!', text_content, 
-                self.campaign.moderator.email, [self.email,], 
-                html_message=html_content)
-        except:
-            raise
-        
-        return True
+    def send(self):
+        subject = 'You have been challenged!'
+        content = 'You have been challenged by ' + self.challenger + ' from the ' + self.turn.campaign + ' campaign.'
+        send_mail(subject, content, self.challenger.email, [self.recipient.email,])
     
     def accept(self, user):
         if user == self.recipient and self.status == STATUS_PENDING:
@@ -77,7 +64,7 @@ class Challenge(models.Model):
             self.save()
             return True
         else:
-            raise
+            raise Exception('An unkown error occured: Challenge *not* accepted')
     
     def complete(self, winner, loser):
         if self.is_participant(winner) and self.is_participant(loser):

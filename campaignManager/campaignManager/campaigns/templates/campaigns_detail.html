@@ -59,8 +59,10 @@
     <table class="table table-striped">
         {% for challenge in turn.challenge_set.all %}
         <tr>
-            <td>{{ challenge.participants|join:' vs '}}</td>
-            <td>{{ challenge.status }}</td>
+            <td>
+                {{ challenge.challenger }} vs {{ challenge.recipient }}
+            </td>
+            <td>{{ challenge.get_status_value }}</td>
         </tr>
         {% empty %}
         <tr><td>No challenges have been issued this turn</td></tr>
