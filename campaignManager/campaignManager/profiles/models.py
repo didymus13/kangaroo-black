@@ -4,6 +4,7 @@ from django_countries.fields import CountryField
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from campaignManager.settings import UPLOAD_PATH
+from campaignManager.turns.models import Challenge
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
@@ -60,7 +61,7 @@ class CampaignProfile(models.Model):
     def _get_matches(self):
         return self.win + self.tie + self.loss
     matches = property(_get_matches)
-    
+        
     def calc_outcome(self, status, vp):
         """ Calculates the various stats relative to performance """
         if status == 'win':

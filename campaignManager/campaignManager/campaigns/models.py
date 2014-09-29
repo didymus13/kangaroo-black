@@ -44,7 +44,18 @@ class Campaign(models.Model):
     
     def is_participant(self, user):
         return user in self.participants.all()
-        
+    
+    def _get_campaign_profiles(self):
+        cps = []
+        for p in self.participants.all():
+            cps.append(p.campaignprofile_set.get(campaign=self))
+        return cps
+    campaign_profiles = property(_get_campaign_profiles)
+    
+    def _get_current_turn(self):
+        return self.turn_set.all()[0]
+    current_turn = property(_get_current_turn)
+    
 class CampaignForm(ModelForm):
     from campaignManager.armies.models import Game
     class Meta:
