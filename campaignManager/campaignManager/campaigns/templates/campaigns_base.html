@@ -31,7 +31,13 @@
                             Introduction
                         </a>
                     </li>
-                    <li><a href="#">Challenges</a></li>
+                    {% if is_participant %}
+                        <li>
+                            <a href="{% url 'campaigns:dashboard' campaign.pk %}" >
+                               Dashboard
+                            </a>
+                        </li>
+                    {% endif %}
                     {% if editable %}
                     <li class="dropdown">
                         <a href="{% url 'campaigns:edit' campaign.pk %}" class="dropdown-toggle" data-toggle="dropdown">

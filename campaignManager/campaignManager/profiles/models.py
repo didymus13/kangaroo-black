@@ -43,6 +43,7 @@ class CampaignProfile(models.Model):
     }
     
     user = models.ForeignKey(User)
+    faction = models.ForeignKey('armies.Faction')
     campaign = models.ForeignKey('campaigns.Campaign')
     # Campaign Points 
     cp = models.IntegerField(default=0)
@@ -61,6 +62,18 @@ class CampaignProfile(models.Model):
     def _get_matches(self):
         return self.win + self.tie + self.loss
     matches = property(_get_matches)
+    
+    def _get_challenges_sent(self):
+        return self.user.challenger.all()
+    challenges_sent = property(_get_challenges_sent)
+    
+    def _get_challenges_recieved(self):
+        return self.user.recipient.all()
+    challenges_received = property(_get_challenges_recieved)
+    
+    def _get_challenges_won(self):
+        return self.user.winner.all()
+    challenges_won = property(_get_challenges_won)
         
     def calc_outcome(self, status, vp):
         """ Calculates the various stats relative to performance """

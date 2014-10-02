@@ -29,9 +29,9 @@ class Challenge(models.Model):
     STATUS_ACCEPTED = 10
     STATUS_COMPLETE = 100
     STATUS_CHOICES = [
-        ['pending', STATUS_PENDING], 
-        ['accepted', STATUS_ACCEPTED], 
-        ['complete', STATUS_COMPLETE]
+        [STATUS_PENDING, 'pending'], 
+        [STATUS_ACCEPTED, 'accepted'], 
+        [STATUS_COMPLETE, 'complete']
     ]
     
     turn = models.ForeignKey(Turn)
@@ -48,7 +48,7 @@ class Challenge(models.Model):
     status = models.PositiveIntegerField(choices=STATUS_CHOICES, default=STATUS_PENDING)
     
     class Meta:
-        ordering = ['-turn', '-issued_date']
+        ordering = ['-issued_date', '-turn']
     
     def __unicode__(self):
         return self.uuid

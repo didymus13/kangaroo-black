@@ -93,7 +93,7 @@ def challenge_accept(request, uuid):
         messages.add_message(request, messages.ERROR, 
             'An unknown error has occured. Challenge *not* accepted')
     finally:
-        return redirect('campaigns:detail', challenge.turn.campaign.pk)
+        return redirect('campaigns:dashboard', challenge.turn.campaign.pk)
     
 @login_required
 def challenge_complete(request, uuid, winner):
@@ -107,4 +107,4 @@ def challenge_complete(request, uuid, winner):
         messages.add_message(request, errors.ERROR, 
             'An unknown error occured. Challenge *not* completed')
     finally:
-        return redirect('campaigns:detail', challenge.turn.campaign.pk)
+        return redirect('campaigns:dashboard', challenge.turn.campaign.pk)
