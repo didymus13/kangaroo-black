@@ -96,5 +96,8 @@ def dashboard(request, pk):
     return render(request, 'dashboard.html', {
         'user': request.user,
         'cp': campaign_profile,
+        'campaign': campaign,
+        'editable': campaign.is_owned_by(request.user),
+        'is_participant': campaign.is_participant(request.user),
         'page_title': 'Your ' + campaign.name + ' dashboard'
     })
