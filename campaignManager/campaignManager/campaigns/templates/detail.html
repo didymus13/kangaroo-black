@@ -34,9 +34,11 @@
                 <td>{{ p.loss|default:0 }}</td>
                 <td>{{ p.matches|default:0 }}</td>
                 <td>
+                    {% if p.user != user %}
                     <a href="{% url 'turns:challenge_send' campaign.current_turn.pk p.pk %}">
                         Challenge!
                     </a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

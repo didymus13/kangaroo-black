@@ -5,12 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
 from campaignManager.turns.models import Turn
+from campaignManager.profiles.models import CampaignProfile
 
 # Create your views here.
 def detail(request, pk):
     campaign = get_object_or_404(Campaign, pk=pk)
     
-    return render(request, 'campaigns_detail.html', {
+    return render(request, 'detail.html', {
         'campaign': campaign,
         'user': request.user,
         'editable': campaign.is_owned_by(request.user),
@@ -22,7 +23,7 @@ def index(request, status=None, slug=None):
     if status: campaigns = campaigns.filter(status=status)
     if slug: campaigns = campaigns.filter(game__slug=slug)
     
-    return render(request, 'campaigns_index.html', {
+    return render(request, 'index.html', {
         'campaigns': campaigns,
         'user': request.user,
     })
@@ -30,7 +31,7 @@ def index(request, status=None, slug=None):
 @login_required
 def my_index(request):
     campaigns = Campaign.objects.filter(Q(moderator=request.user) | Q(participants=request.user)) 
-    return render(request, 'campaigns_index.html', {
+    return render(request, 'index.html', {
         'campaigns': campaigns,
         'user': request.user
     })
@@ -86,3 +87,17 @@ def delete(request, pk):
         messages.add_message(request, messages.ERROR, 
                 'Campaigns can only be deleted by their owners')
         return redirect('campaigns:detail', campaign.pk)
+    
+@login_required
+def dashboard(request, pk):
+    campaign = get_object_or_404(Campaign, pk=pk)
+    campaign_profile = CampaignProfile.objects.get(user=request.user, campaign=campaign)
+    
+    return render(request, 'dashboard.html', {
+        'user': request.user,
+        'cp': campaign_profile,
+        'campaign': campaign,
+        'editable': campaign.is_owned_by(request.user),
+        'is_participant': campaign.is_participant(request.user),
+        'page_title': 'Your ' + campaign.name + ' dashboard'
+    })
