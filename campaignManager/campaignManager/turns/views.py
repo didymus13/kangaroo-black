@@ -87,7 +87,9 @@ def challenge_accept(request, uuid):
     challenge = get_object_or_404(Challenge, uuid=uuid)
     try:
         challenge.accept(request.user)
-        challenge.send(request)
+        print 'after accept'
+        challenge.save()
+        print 'after save'
         messages.add_message(request, messages.SUCCESS, 'Challenge accepted.')
     except:
         messages.add_message(request, messages.ERROR, 

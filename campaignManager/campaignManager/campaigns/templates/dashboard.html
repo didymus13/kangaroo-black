@@ -37,11 +37,7 @@
                     {% for challenge in cp.challenges_received %}
                     <tr>
                         <td>
-                        {% if challenge.status == 0 %}
-                            <a href="{% url 'turns:challenge_accept' challenge.uuid %}">
-                                {{ challenge.get_status_display }}
-                            </a>
-                        {% endif %}
+                            {{ challenge.get_status_display }}
                         </td>
                         <td>{{ challenge.recipient }}</td>
                         <td>{{ challenge.turn }}</td>

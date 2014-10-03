@@ -59,10 +59,8 @@ class Challenge(models.Model):
         send_mail(subject, content, self.challenger.email, [self.recipient.email,])
     
     def accept(self, user):
-        if user == self.recipient and self.status == STATUS_PENDING:
-            self.status = STATUS_ACCEPTED
-            self.save()
-            return True
+        if user == self.recipient and self.status == self.STATUS_PENDING:
+            self.status = self.STATUS_ACCEPTED
         else:
             raise Exception('An unkown error occured: Challenge *not* accepted')
     
