@@ -66,27 +66,27 @@ class Challenge(models.Model):
 
     def _get_win_participants(self, user):
         if self.challenger == user:
-            return { winner: self.challenger, loser: self.recipient }
+            return { 'winner': self.challenger, 'loser': self.recipient }
         else:
-            return { winner: self.recipient, loser: self.challenger }
+            return { 'winner': self.recipient, 'loser': self.challenger }
     
     def _get_loss_participants(self, user):
         if self.challenger == user:
-            return { winner: self.recipient, loser: self.challenger }
+            return { 'winner': self.recipient, 'loser': self.challenger }
         else:
-            return { winner: self.challenger, loser: self.recipient }
+            return { 'winner': self.challenger, 'loser': self.recipient }
     
     def resolve(self, outcome, user):
         if (outcome == 'win'):
-            winner, loser = self.get_win_participants(user)
+            results = self._get_win_participants(user)
         elif (outcome == 'loss'):
-            winner, loser = self.get_loss_participants(user)
+            results = self._get_loss_participants(user)
         elif (outcome == 'tie'):
             pass
         else:
             raise Exception('Invalid outcome: must be "win", "tie", or "loss"')
         
-        self.winner = winner
+        self.winner = results['winner']
         self.status = self.STATUS_COMPLETE
     
     def is_participant(self, user):

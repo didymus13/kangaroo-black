@@ -100,6 +100,9 @@ def challenge_resolve(request, outcome, uuid):
     challenge = get_object_or_404(Challenge, uuid=uuid)
     try:
         challenge.resolve(outcome, request.user)
+        challenge.save();
+        messages.add_message(request, messages.SUCCESS, 
+        'Challenge Resolved')
     except:
         messages.add_message(request, messages.ERROR, 
         'An unknown error has occured. Challenge *not* resolved')
