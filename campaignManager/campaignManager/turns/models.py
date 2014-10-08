@@ -63,15 +63,31 @@ class Challenge(models.Model):
             self.status = self.STATUS_ACCEPTED
         else:
             raise Exception('An unkown error occured: Challenge *not* accepted')
-    
-    def complete(self, winner, loser):
-        if self.is_participant(winner) and self.is_participant(loser):
-            self.winner = winner
-            self.status = STATUS_COMPLETE
-            # @TODO: SEND WINNER AND LOSER SIGNALS
-            return self.save()
+
+    def _get_win_participants(self, user):
+        if self.challenger == user:
+            return { winner: self.challenger, loser: self.recipient }
         else:
-            return false
+            return { winner: self.recipient, loser: self.challenger }
+    
+    def _get_loss_participants(self, user):
+        if self.challenger == user:
+            return { winner: self.recipient, loser: self.challenger }
+        else:
+            return { winner: self.challenger, loser: self.recipient }
+    
+    def resolve(self, outcome, user):
+        if (outcome == 'win'):
+            winner, loser = self.get_win_participants(user)
+        elif (outcome == 'loss'):
+            winner, loser = self.get_loss_participants(user)
+        elif (outcome == 'tie'):
+            pass
+        else:
+            raise Exception('Invalid outcome: must be "win", "tie", or "loss"')
+        
+        self.winner = winner
+        self.status = self.STATUS_COMPLETE
     
     def is_participant(self, user):
         if self.user in [self.challenger, self.recipient]:

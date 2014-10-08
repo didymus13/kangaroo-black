@@ -91,13 +91,12 @@ def delete(request, pk):
 @login_required
 def dashboard(request, pk):
     campaign = get_object_or_404(Campaign, pk=pk)
-    campaign_profile = CampaignProfile.objects.get(user=request.user, campaign=campaign)
     
     return render(request, 'dashboard.html', {
         'user': request.user,
-        'cp': campaign_profile,
+        'cp': CampaignProfile.objects.get(user=request.user, campaign=campaign),
         'campaign': campaign,
         'editable': campaign.is_owned_by(request.user),
         'is_participant': campaign.is_participant(request.user),
-        'page_title': 'Your ' + campaign.name + ' dashboard'
+        'page_title': 'Your ' + campaign.name + ' dashboard',
     })
