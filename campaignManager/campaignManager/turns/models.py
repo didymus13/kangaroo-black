@@ -1,9 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
 from django.core.mail import send_mail
-import uuid
-from django.template.loader import get_template
-from django.template import Context
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -46,6 +43,15 @@ class Challenge(models.Model):
     winner = models.ForeignKey(User, blank=True, null=True, related_name='winner')
     issued_date = models.DateTimeField(auto_now_add=True)
     status = models.PositiveIntegerField(choices=STATUS_CHOICES, default=STATUS_PENDING)
+    
+    
+    def _get_loser(self):
+        if not self.winner:
+            return false
+        elif self.winner == self.challenger:
+            return self.recipient
+        return self.challenger
+    loser = property(_get_loser)
     
     class Meta:
         ordering = ['-issued_date', '-turn']

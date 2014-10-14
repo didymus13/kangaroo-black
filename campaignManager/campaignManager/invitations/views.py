@@ -41,7 +41,6 @@ def accept_invitation(request, uuid):
     try:
         campaign.participants.add(request.user)
         campaign.save()
-        cp = CampaignProfile.objects.create(user=request.user, campaign=campaign)
         invitation.delete()
         messages.add_message(request, messages.SUCCESS, 
             campaign.name+' invitation accepted')

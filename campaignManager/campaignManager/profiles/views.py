@@ -49,4 +49,4 @@ def detail(request, username):
         'my_campaigns': my_campaigns,
         'editable': profile.is_owned_by(request.user)
     })
-    
+        
