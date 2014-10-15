@@ -2,6 +2,7 @@ from django.db import models
 from django.forms import ModelForm
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
+import django.dispatch
 
 # Create your models here.
 class Turn(models.Model):
@@ -94,6 +95,8 @@ class Challenge(models.Model):
         
         self.winner = results['winner']
         self.status = self.STATUS_COMPLETE
+        challenge_complete.send(sender=self.__class__, instance=self)
+        self.save()
     
     def is_participant(self, user):
         if self.user in [self.challenger, self.recipient]:
@@ -104,3 +107,5 @@ class ResultForm(ModelForm):
     class Meta:
         model = Challenge
         fields = ['winner',]
+
+challenge_complete = django.dispatch.Signal(providing_args=['instance',])

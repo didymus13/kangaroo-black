@@ -1,5 +1,7 @@
 from django.contrib import admin
 from models import *
 
-# Register your models here.
-admin.site.register(Invitation)
+@admin.register(Invitation)
+class InvitationAdmin(admin.ModelAdmin):
+    list_display = ('uuid', 'email', 'created')
+    list_filter = ('email', 'created')

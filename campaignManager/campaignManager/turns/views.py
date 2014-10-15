@@ -100,9 +100,6 @@ def challenge_resolve(request, outcome, uuid):
     challenge = get_object_or_404(Challenge, uuid=uuid)
     try:
         challenge.resolve(outcome, request.user)
-        challenge.save();
-        challenge_complete.send(sender=self.__class__, outcome='win', user=challenge.winner)
-        challenge_complete.send(sender=self.__class__, outcome='loss', user=challenge.loser)
         messages.add_message(request, messages.SUCCESS, 
         'Challenge Resolved')
     except:
