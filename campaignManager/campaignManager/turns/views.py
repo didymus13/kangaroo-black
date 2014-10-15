@@ -87,7 +87,7 @@ def challenge_accept(request, uuid):
     challenge = get_object_or_404(Challenge, uuid=uuid)
     try:
         challenge.accept(request.user)
-        challenge.send(request)
+        challenge.save()
         messages.add_message(request, messages.SUCCESS, 'Challenge accepted.')
     except:
         messages.add_message(request, messages.ERROR, 
@@ -96,15 +96,14 @@ def challenge_accept(request, uuid):
         return redirect('campaigns:dashboard', challenge.turn.campaign.pk)
     
 @login_required
-def challenge_complete(request, uuid, winner):
+def challenge_resolve(request, outcome, uuid):
     challenge = get_object_or_404(Challenge, uuid=uuid)
     try:
-        winner = get_object_or_404(User, pk=winner)
-        challenge.complete(winner)
-        messages.add_message(request, error.SUCCESS, 
-            winner + " wins. Challenge complete")
+        challenge.resolve(outcome, request.user)
+        messages.add_message(request, messages.SUCCESS, 
+        'Challenge Resolved')
     except:
-        messages.add_message(request, errors.ERROR, 
-            'An unknown error occured. Challenge *not* completed')
+        messages.add_message(request, messages.ERROR, 
+        'An unknown error has occured. Challenge *not* resolved')
     finally:
         return redirect('campaigns:dashboard', challenge.turn.campaign.pk)

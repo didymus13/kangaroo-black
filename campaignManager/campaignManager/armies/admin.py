@@ -5,9 +5,10 @@ from models import *
 class CommonAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name", )}
 
+@admin.register(Faction)
 class FactionAdmin(CommonAdmin):
-    pass
-admin.site.register(Faction, FactionAdmin)
+    list_display = ('name', 'game')
+    list_filter = ('game',)
 
 class FactionTabular(admin.TabularInline):
     model = Faction

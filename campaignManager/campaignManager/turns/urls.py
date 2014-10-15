@@ -12,8 +12,10 @@ urlpatterns = patterns('',
     
     url(r'^(?P<pk>\d+)/challenge/(?P<recipient>\d+)/$', views.challenge_send, 
         name='challenge_send'),
-    url(r'^(?P<pk>\d+)/challenge/(?P<uuid>.+)/$', views.challenge_accept, 
+    url(r'^challenge/(?P<uuid>\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/$', 
+        views.challenge_accept, 
         name='challenge_accept'),
-    url(r'^(?P<pk>\d+)/challenge/(?P<uuid>.+)/(?P<winner>\d+)/$', views.challenge_complete, 
-        name='challenge_complete'),
+    url(r'^challenge/(?P<uuid>\w{8}-\w{4}-\w{4}-\w{4}-\w{12})/(?P<outcome>\w+)/$', 
+        views.challenge_resolve, 
+        name='challenge_resolve'),
 )

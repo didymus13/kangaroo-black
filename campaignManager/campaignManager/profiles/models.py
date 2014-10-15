@@ -5,6 +5,11 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from campaignManager.settings import UPLOAD_PATH
 from campaignManager.turns.models import Challenge
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
+from campaignManager.campaigns.models import Campaign
+from campaignManager.turns.models import Challenge
+from campaignManager.turns.models import challenge_complete
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
@@ -25,7 +30,13 @@ class ProfileForm(ModelForm):
     class Meta:
         model = Profile
         exclude = ['user',]
-        
+
+@receiver(post_save, sender=User)
+def ensure_profile_exists(sender, **kwargs):
+    if kwargs.get('created', False):
+        Profile.objects.get_or_create(user=kwargs.get('instance'));
+
+    
 class CampaignProfile(models.Model):
     """ 
     Each user can have a multiple campaign standings. Campaign points and
@@ -43,7 +54,7 @@ class CampaignProfile(models.Model):
     }
     
     user = models.ForeignKey(User)
-    faction = models.ForeignKey('armies.Faction')
+    faction = models.ForeignKey('armies.Faction', blank=True, null=True)
     campaign = models.ForeignKey('campaigns.Campaign')
     # Campaign Points 
     cp = models.IntegerField(default=0)
@@ -86,5 +97,21 @@ class CampaignProfile(models.Model):
         
         self.cp += OUTCOMES[status]
         self.vp += vp
+
+@receiver(post_save, sender=Campaign)
+def ensure_campaign_profiles_exist(sender, **kwargs):
+    campaign = kwargs.get('instance')
+    for participant in campaign.participants.all():
+        CampaignProfile.objects.get_or_create(campaign=campaign, user=participant)
+
+@receiver(challenge_complete, sender=Challenge)
+def process_outcome(sender, **kwargs):
+    challenge = kwargs.get('instance')
     
-    
+    winner = CampaignProfile.objects.get(campaign=challenge.campaign, user=challenge.winner)
+    loser = CampaignProfile.objects.get(campaign=challenge.campaign, user=challenge.loser)
+    if winner and loser: 
+        winner.calc_outcome('win', 0)
+        winner.save()
+        loser.calc_outcome('loss', 0)
+        loser.save()

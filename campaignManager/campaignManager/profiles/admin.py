@@ -3,4 +3,8 @@ from models import *
 
 # Register your models here.
 admin.site.register(Profile)
-admin.site.register(CampaignProfile)
+
+@admin.register(CampaignProfile)
+class CampaignProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'campaign', 'cp', 'vp', 'win', 'tie', 'loss', 'matches')
+    list_filter = ('campaign',)

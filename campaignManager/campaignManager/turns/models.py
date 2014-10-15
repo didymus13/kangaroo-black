@@ -1,10 +1,8 @@
 from django.db import models
 from django.forms import ModelForm
 from django.core.mail import send_mail
-import uuid
-from django.template.loader import get_template
-from django.template import Context
 from django.contrib.auth.models import User
+import django.dispatch
 
 # Create your models here.
 class Turn(models.Model):
@@ -47,6 +45,15 @@ class Challenge(models.Model):
     issued_date = models.DateTimeField(auto_now_add=True)
     status = models.PositiveIntegerField(choices=STATUS_CHOICES, default=STATUS_PENDING)
     
+    
+    def _get_loser(self):
+        if not self.winner:
+            return false
+        elif self.winner == self.challenger:
+            return self.recipient
+        return self.challenger
+    loser = property(_get_loser)
+    
     class Meta:
         ordering = ['-issued_date', '-turn']
     
@@ -59,21 +66,37 @@ class Challenge(models.Model):
         send_mail(subject, content, self.challenger.email, [self.recipient.email,])
     
     def accept(self, user):
-        if user == self.recipient and self.status == STATUS_PENDING:
-            self.status = STATUS_ACCEPTED
-            self.save()
-            return True
+        if user == self.recipient and self.status == self.STATUS_PENDING:
+            self.status = self.STATUS_ACCEPTED
         else:
             raise Exception('An unkown error occured: Challenge *not* accepted')
-    
-    def complete(self, winner, loser):
-        if self.is_participant(winner) and self.is_participant(loser):
-            self.winner = winner
-            self.status = STATUS_COMPLETE
-            # @TODO: SEND WINNER AND LOSER SIGNALS
-            return self.save()
+
+    def _get_win_participants(self, user):
+        if self.challenger == user:
+            return { 'winner': self.challenger, 'loser': self.recipient }
         else:
-            return false
+            return { 'winner': self.recipient, 'loser': self.challenger }
+    
+    def _get_loss_participants(self, user):
+        if self.challenger == user:
+            return { 'winner': self.recipient, 'loser': self.challenger }
+        else:
+            return { 'winner': self.challenger, 'loser': self.recipient }
+    
+    def resolve(self, outcome, user):
+        if (outcome == 'win'):
+            results = self._get_win_participants(user)
+        elif (outcome == 'loss'):
+            results = self._get_loss_participants(user)
+        elif (outcome == 'tie'):
+            pass
+        else:
+            raise Exception('Invalid outcome: must be "win", "tie", or "loss"')
+        
+        self.winner = results['winner']
+        self.status = self.STATUS_COMPLETE
+        challenge_complete.send(sender=self.__class__, instance=self)
+        self.save()
     
     def is_participant(self, user):
         if self.user in [self.challenger, self.recipient]:
@@ -84,3 +107,5 @@ class ResultForm(ModelForm):
     class Meta:
         model = Challenge
         fields = ['winner',]
+
+challenge_complete = django.dispatch.Signal(providing_args=['instance',])
