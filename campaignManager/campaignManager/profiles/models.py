@@ -1,15 +1,13 @@
 from django.db import models
-#from campaignManager.armies.models import Game
 from django_countries.fields import CountryField
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from campaignManager.settings import UPLOAD_PATH
 from campaignManager.turns.models import Challenge
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from campaignManager.campaigns.models import Campaign
-from campaignManager.turns.models import Challenge
-from campaignManager.turns.models import challenge_complete
+from campaignManager.turns.models import Challenge, challenge_complete
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
@@ -95,7 +93,7 @@ class CampaignProfile(models.Model):
         elif status == 'loss':
             self.loss += 1
         
-        self.cp += OUTCOMES[status]
+        self.cp += self.OUTCOMES[status]
         self.vp += vp
 
 @receiver(post_save, sender=Campaign)
@@ -108,8 +106,14 @@ def ensure_campaign_profiles_exist(sender, **kwargs):
 def process_outcome(sender, **kwargs):
     challenge = kwargs.get('instance')
     
-    winner = CampaignProfile.objects.get(campaign=challenge.campaign, user=challenge.winner)
-    loser = CampaignProfile.objects.get(campaign=challenge.campaign, user=challenge.loser)
+    winner = CampaignProfile.objects.get(
+        campaign=challenge.turn.campaign, 
+        user=challenge.winner
+    )
+    loser = CampaignProfile.objects.get(
+        campaign=challenge.turn.campaign, 
+        user=challenge.loser
+    )
     if winner and loser: 
         winner.calc_outcome('win', 0)
         winner.save()

@@ -102,8 +102,8 @@ def challenge_resolve(request, outcome, uuid):
         challenge.resolve(outcome, request.user)
         messages.add_message(request, messages.SUCCESS, 
         'Challenge Resolved')
-    except:
-        messages.add_message(request, messages.ERROR, 
-        'An unknown error has occured. Challenge *not* resolved')
+    except Exception as e:
+        print e
+        messages.add_message(request, messages.ERROR, e) 
     finally:
         return redirect('campaigns:dashboard', challenge.turn.campaign.pk)
