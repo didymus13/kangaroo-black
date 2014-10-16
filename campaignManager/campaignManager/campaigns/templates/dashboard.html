@@ -1,0 +1,83 @@
+{% extends 'campaigns_base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block main %}
+
+<h1>{{ page_title }}</h1>
+
+<div class="row">
+    <div class=" col-xs-12 col-sm-6">
+        <div class='panel panel-default'>
+            <div class="panel-heading">Current Performance</div>
+            <ul>
+                <li>Faction: {{ cp.faction }}</li>
+                <li>Campaign Points: {{ cp.cp }}</li>
+                <li>Victory Points: {{cp.vp }}</li>
+                <li>Wins: {{ cp.win }}</li>
+                <li>Ties: {{ cp.tie }}</li>
+                <li>Losses: {{ cp.loss }}</li>
+                <li>Total Matches: {{ cp.matches }}</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class=" col-xs-12 col-sm-6">
+        <div class='panel panel-default'>
+            <div class='panel-heading'>Received Challenges</div>
+            <table class='table table-hover'>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Challenger</th>
+                        <th>Recipient</th>
+                        <th>Turn</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for challenge in cp.all_challenges %}
+                    <tr class="
+                    {% if challenge.get_status_display == 'pending' %}
+                        bg-danger text-danger
+                    {% elif challenge.get_status_display == 'accepted' %}
+                        bg-warning text-warning
+                    {% elif challenge.get_status_display == 'complete' %}
+                        bg-success text-success
+                    {% endif %}
+                    ">
+                        <td>
+                            {% if challenge.winner == user %}
+                            <span class="glyphicon glyphicon-ok text-success"></span>
+                            {% elif challenge.loser == user %}
+                            <span class="glyphicon glyphicon-remove text-danger"></span>
+                            {% elif challenge.recipient == user %}
+                            <span class="glyphicon glyphicon-screenshot text-warning"></span>
+                            {% endif %}
+                        </td>
+                        <td>{{ challenge.challenger }}</td>
+                        <td>{{ challenge.recipient }}</td>
+                        <td>{{ challenge.turn }}</td>
+                        <td>
+                            {% if challenge.status == challenge.STATUS_PENDING and challenge.recipient == user %}
+                                <a href="{% url 'turns:challenge_accept' challenge.uuid %}">
+                                    Accept
+                                </a>
+                            {% elif challenge.status == challenge.STATUS_ACCEPTED %}
+                                <a href="{% url 'turns:challenge_resolve' challenge.uuid 'win' %}" class="btn btn-success">
+                                    I Won
+                                </a>
+                                <a href="{% url 'turns:challenge_resolve' challenge.uuid 'loss' %}" class="btn btn-danger">
+                                    I Lost
+                                </a> 
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'campaigns_base.html' %}
+{% load markdown_deux_tags %}
+
+{% block title %}{{ campaign.name }}{% endblock %}
+
+{% block main %}
+
+<h1>{{ campaign.name }} <small>{{ campaign.game }}</small></h1>
+
+<div class="col-xs-12">{{ campaign.blurb|markdown }}</div>
+
+<div class="panel">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>General</th>
+                <td>Faction</td>
+                <th>Campaign Points</th>
+                <th>Victory Points</th>
+                <th>Win</th>
+                <th>Tie</th>
+                <th>Loss</th>
+                <th>Matches</th>
+                <th>Challenge</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in campaign.campaign_profiles %}
+            <tr>
+                <td>{{ p }}</td>
+                <td>{{ p.faction }}</td>
+                <td>{{ p.cp|default:0 }}</td>
+                <td>{{ p.vp|default:0 }}</td>
+                <td>{{ p.win|default:0 }}</td>
+                <td>{{ p.tie|default:0 }}</td>
+                <td>{{ p.loss|default:0 }}</td>
+                <td>{{ p.matches|default:0 }}</td>
+                <td>
+                    {% if campaign.status == campaign.STATUS_PLAYING and p.user != user  %}
+                    <a href="{% url 'turns:challenge_send' campaign.current_turn.pk p.user.pk %}">
+                        Challenge!
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% for turn in campaign.turn_set.all %}
+<div class="col-xs-12 col-sm-6 col-md-4">
+    <h4>
+    {% if editable %}
+    <a href="{% url 'turns:edit' turn.pk %}">{{ turn.label }}</a>
+    {% else %}
+    {{ turn.label }}
+    {% endif %}
+    </h4>
+
+    <p>{{ turn.description|markdown }}</p>
+
+    <table class="table table-striped">
+        {% for challenge in turn.challenge_set.all %}
+        <tr>
+            <td>
+                {{ challenge.challenger }} vs {{ challenge.recipient }}
+            </td>
+            <td>{{ challenge.get_status_value }}</td>
+        </tr>
+        {% empty %}
+        <tr><td>No challenges have been issued this turn</td></tr>
+        {% endfor %}
+    </table>
+    
+</div>
+{% endfor %}
+
+{% endblock %}

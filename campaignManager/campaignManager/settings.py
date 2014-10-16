@@ -12,12 +12,13 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+from credentials import *
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'e62h@&3a&c*(2jl7_kzltw#2bz9t_ee(cs83gv#^o2!s-^e7yb'
+#SECRET_KEY = 'e62h@&3a&c*(2jl7_kzltw#2bz9t_ee(cs83gv#^o2!s-^e7yb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,7 +40,13 @@ INSTALLED_APPS = (
     'campaignManager.armies',
     'campaignManager.profiles', 
     'campaignManager.campaigns',
-    'south',
+    'social.apps.django_app.default',
+    'django_countries',
+    'markdown_deux',
+    'campaignManager.cmtags',
+    'campaignManager.invitations',
+    'widget_tweaks',
+    'campaignManager.turns',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -71,7 +78,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 
@@ -79,8 +86,46 @@ USE_L10N = True
 
 USE_TZ = True
 
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    '/var/www/static/',
+)
+
+UPLOAD_PATH = 'photos/%Y/%m/%d'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/uploads')
+MEDIA_URL = '/static/uploads/'
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+   'django.contrib.auth.context_processors.auth',
+   'django.core.context_processors.debug',
+   'django.core.context_processors.i18n',
+   'django.core.context_processors.media',
+   'django.core.context_processors.static',
+   'django.core.context_processors.tz',
+   'django.contrib.messages.context_processors.messages',
+   'social.apps.django_app.context_processors.backends',
+   'social.apps.django_app.context_processors.login_redirect',
+)
+
+AUTHENTICATION_BACKENDS = (
+   'social.backends.facebook.FacebookOAuth2',
+   'social.backends.twitter.TwitterOAuth',
+   'django.contrib.auth.backends.ModelBackend',
+)
+
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'home'
+LOGOUT_URL = 'auth:logout'
+
+COUNTRIES_FLAG_PATH = 'images/flags/%s.png'
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}
