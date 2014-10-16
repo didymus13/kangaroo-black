@@ -68,18 +68,19 @@ def edit(request, pk):
 @login_required
 def challenge_send(request, pk, recipient):
     try:
-        challenge = Challenge.objects.create(
+        turn = Turn.objects.get(pk=pk)
+        Challenge.objects.create(
             uuid=uuid.uuid4(), 
-            turn = get_object_or_404(Turn, pk=pk),
+            turn = turn,
             challenger = request.user,
-            recipient = get_object_or_404(User, pk=recipient)
+            recipient = User.objects.get(pk=recipient)
         )
         messages.add_message(request, messages.SUCCESS, 'Challenge issued!')
-    except:
+    except Exception as e:
         messages.add_message(request, messages.ERROR, 
-            'An unknown error occured. Challenge *not* issued')
+            e)
     finally:
-        return redirect('campaigns:detail', challenge.turn.campaign.pk)
+        return redirect('campaigns:detail', turn.campaign.pk)
     
 
 @login_required

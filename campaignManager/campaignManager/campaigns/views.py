@@ -30,7 +30,8 @@ def index(request, status=None, slug=None):
 
 @login_required
 def my_index(request):
-    campaigns = Campaign.objects.filter(Q(moderator=request.user) | Q(participants=request.user)) 
+    campaigns = Campaign.objects.filter(
+        Q(moderator=request.user) | Q(participants=request.user)).distinct()
     return render(request, 'index.html', {
         'campaigns': campaigns,
         'user': request.user

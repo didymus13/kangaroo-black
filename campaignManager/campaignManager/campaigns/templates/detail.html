@@ -37,7 +37,7 @@
                 <td>{{ p.matches|default:0 }}</td>
                 <td>
                     {% if campaign.status == campaign.STATUS_PLAYING and p.user != user  %}
-                    <a href="{% url 'turns:challenge_send' campaign.current_turn.pk p.pk %}">
+                    <a href="{% url 'turns:challenge_send' campaign.current_turn.pk p.user.pk %}">
                         Challenge!
                     </a>
                     {% endif %}
