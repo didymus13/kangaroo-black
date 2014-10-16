@@ -51,7 +51,7 @@
                             </li>
                             <li>
                                 <a href="{% url 'turns:create' campaign.pk %}">
-                                {% if current_turn %}
+                                {% if campaign.current_turn %}
                                     Finish Turn
                                 {% else %}
                                     Start Campaign

@@ -80,6 +80,10 @@ class CampaignProfile(models.Model):
         return self.user.recipient.all()
     challenges_received = property(_get_challenges_recieved)
     
+    def _get_all_challenges(self):
+        return self.challenges_received | self.challenges_sent
+    all_challenges = property(_get_all_challenges)
+    
     def _get_challenges_won(self):
         return self.user.winner.all()
     challenges_won = property(_get_challenges_won)
