@@ -47,7 +47,11 @@
                             </a>
                             <ul class="dropdown-menu" role="menu">                                
                                 <li><a href="{% url 'campaigns:index' %}">All</a></li>
-                                <li><a href="{% url 'campaigns:index' %}">Looking for players</a></li>
+                                <li>
+                                    <a href="{% url 'campaigns:looking_for_players' %}">
+                                        Looking for players
+                                    </a>
+                                </li>
                                 <li class="divider"></li>
                                 {% url 'campaigns:index' as campaign_url %}
                                 {% game_links campaign_url %}

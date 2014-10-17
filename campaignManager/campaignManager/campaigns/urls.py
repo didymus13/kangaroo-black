@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^new/$', views.edit, name='new'),
     
     url(r'^mine/$', views.my_index, name='mine'),
+    url(r'^looking-for-players/$', views.looking_for_players, name='looking_for_players'),
     url(r'^(?P<slug>.+)/$', views.index, name='index'),
     url(r'^$', views.index, name='index'),
 )
