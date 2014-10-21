@@ -19,7 +19,7 @@ def create(request, campaign_id):
     current_turn = None
     turns = campaign.turn_set.all()
     if turns:
-        current_turn = turns[:0].get()
+        current_turn = turns[0]
     
     if request.method == 'POST':
         form = TurnForm(request.POST)
@@ -27,9 +27,7 @@ def create(request, campaign_id):
             if not current_turn:
                 campaign.status = campaign.STATUS_PLAYING
                 campaign.save()
-            else:
-                current_turn.finish()
-                
+                turn_finished(sender=current_turn.__class__, instance=current_turn)
             turn = form.save(commit=False)
             turn.campaign = campaign
             turn.save()
@@ -40,7 +38,7 @@ def create(request, campaign_id):
     return render(request, 'form.html', {
         'user': request.user,
         'form': form,
-        'page_title': 'Create the first turn for ' + campaign.name
+        'page_title': 'Create a new turn for ' + campaign.name
     })
 
 @login_required
