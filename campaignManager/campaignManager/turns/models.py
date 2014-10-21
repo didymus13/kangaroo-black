@@ -2,14 +2,25 @@ from django.db import models
 from django.forms import ModelForm
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
+from django.dispatch import receiver
 import django.dispatch
+from django.db.models.signals import post_save
 
 # Create your models here.
 class Turn(models.Model):
+    STATUS_PENDING = 0
+    STATUS_ACTIVE = 50
+    STATUS_COMPLETE = 100
+    STATUS_CHOICES = [
+        [STATUS_PENDING, 'initial'],
+        [STATUS_ACTIVE, 'active'],
+        [STATUS_COMPLETE, 'complete']
+    ]
     label = models.CharField(max_length=64, help_text='eg: Summer 1666, Stardate 12345.6')
     description = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     campaign = models.ForeignKey('campaigns.Campaign', )
+    status = models.PositiveIntegerField(default=STATUS_PENDING, choices=STATUS_CHOICES)
     
     def __unicode__(self):
         return self.label
@@ -21,6 +32,22 @@ class TurnForm(ModelForm):
     class Meta:
         model = Turn
         exclude = ['campaign', 'created']
+
+turn_finished = django.dispatch.Signal(providing_args=['instance',])
+
+@receiver(post_save, sender=Turn)
+def expire_old_turns(sender, **kwargs):
+    if kwargs.get('created', False):
+        turn = kwargs.get('instance')
+        
+        for t in turn.campaign.turn_set.all():
+            if t.status != t.STATUS_COMPLETE:
+                t.status = t.STATUS_COMPLETE
+                t.save()
+                turn_finished.send(sender=t.__class__, instance=t)
+        
+        turn.status = turn.STATUS_ACTIVE
+        turn.save()
         
 class Challenge(models.Model):
     STATUS_PENDING = 0
@@ -109,3 +136,10 @@ class ResultForm(ModelForm):
         fields = ['winner',]
 
 challenge_complete = django.dispatch.Signal(providing_args=['instance',])
+
+@receiver(turn_finished, sender=Turn)
+def force_resolve_challenges(sender, **kwargs):
+    challenges = kwargs.get('instance').challenge_set.all()
+    for challenge in challenges:
+        challenge.status = Challenge.STATUS_COMPLETE
+        challenge.save()
