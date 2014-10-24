@@ -37,14 +37,12 @@ def detail(request, username):
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=user)
     
-    armies = Army.objects.filter(user=user)
     campaigns = Campaign.objects.filter(participants=user)
     my_campaigns = Campaign.objects.filter(moderator=user)
     return render(request, 'profiles_detail.html', {
         'request': request,
         'profile': profile,
         'user': request.user,
-        'armies': armies,
         'campaigns': campaigns,
         'my_campaigns': my_campaigns,
         'editable': profile.is_owned_by(request.user)

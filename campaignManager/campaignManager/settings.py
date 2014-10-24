@@ -120,7 +120,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = 'home'
+LOGIN_URL = 'auth:login'
 LOGOUT_URL = 'auth:logout'
 
 COUNTRIES_FLAG_PATH = 'images/flags/%s.png'
