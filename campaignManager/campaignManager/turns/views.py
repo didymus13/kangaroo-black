@@ -22,7 +22,7 @@ def create(request, campaign_id):
         current_turn = turns[0]
     
     if request.method == 'POST':
-        form = TurnForm(request.POST)
+        form = TurnForm(request.POST, request.FILES)
         if form.is_valid():
             if not current_turn:
                 campaign.status = campaign.STATUS_PLAYING
@@ -50,7 +50,7 @@ def edit(request, pk):
         return redirect('campaigns:detail', campaign.pk)
     
     if request.method == 'POST':
-        form = TurnForm(request.POST, instance=turn)
+        form = TurnForm(request.POST, request.FILES, instance=turn)
         if form.is_valid() and form.save():
             return redirect('campaigns:detail', turn.campaign.pk)
     

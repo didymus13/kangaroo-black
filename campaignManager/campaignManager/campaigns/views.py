@@ -27,6 +27,9 @@ def index(request, status=None, slug=None):
         'campaigns': campaigns,
         'user': request.user,
     })
+    
+def looking_for_players(request):
+    return index(request, Campaign.STATUS_LOOKING)
 
 @login_required
 def my_index(request):

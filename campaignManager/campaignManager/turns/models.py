@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 import django.dispatch
 from django.db.models.signals import post_save
+from campaignManager.settings import UPLOAD_PATH
 
 # Create your models here.
 class Turn(models.Model):
@@ -21,6 +22,7 @@ class Turn(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     campaign = models.ForeignKey('campaigns.Campaign', )
     status = models.PositiveIntegerField(default=STATUS_PENDING, choices=STATUS_CHOICES)
+    map = models.ImageField(blank=True, null=True, upload_to=UPLOAD_PATH)
     
     def __unicode__(self):
         return self.label
@@ -31,7 +33,7 @@ class Turn(models.Model):
 class TurnForm(ModelForm):
     class Meta:
         model = Turn
-        exclude = ['campaign', 'created']
+        exclude = ['campaign', 'created', 'status']
 
 turn_finished = django.dispatch.Signal(providing_args=['instance',])
 

@@ -8,6 +8,13 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from campaignManager.campaigns.models import Campaign
 from campaignManager.turns.models import Challenge, challenge_complete
+from django.contrib.auth.forms import UserCreationForm
+
+class MyUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User    
+        required = ['email']
+        fields = ['first_name', 'last_name', 'email',  'username',]
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
