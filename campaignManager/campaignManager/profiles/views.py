@@ -1,6 +1,4 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.core.context_processors import csrf
-from django.template.context import RequestContext
 from campaignManager.profiles.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -46,5 +44,29 @@ def detail(request, username):
         'campaigns': campaigns,
         'my_campaigns': my_campaigns,
         'editable': profile.is_owned_by(request.user)
+    })
+
+@login_required
+def campaign_profile_edit(request, username, campaign_id):
+    user = get_object_or_404(User, username=username)
+    campaign = get_object_or_404(Campaign, pk=campaign_id)
+    campaign_profile = get_object_or_404(CampaignProfile, user=user, campaign=campaign)
+    
+    if request.method == 'POST':
+        try:
+            form = CampaignProfileForm(request.POST, instance=campaign_profile)
+            form.save()
+            messages.addMessage(request, messages.SUCCESS, 'Campaign Profile updated')
+        except Exception as ex:
+            messages.addMessage(request, messages.ERROR, ex)
+        finally:
+            return redirect('campaign:dashboard', campaign_id=campaign.pk)
+    
+    form = CampaignProfileForm(instance=campaign_profile)
+    return render(request, 'campaign_profile_form.html', {
+        'form': form,
+        'user': request.user,
+        'page_title': 'Campaign Profile edit',
+        'cp': campaign_profile
     })
         

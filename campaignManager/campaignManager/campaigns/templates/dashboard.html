@@ -11,7 +11,12 @@
         <div class='panel panel-default'>
             <div class="panel-heading">Current Performance</div>
             <ul>
-                <li>Faction: {{ cp.faction }}</li>
+                <li>Faction: {{ cp.faction }}
+                    {% if editable_profile %}
+                    <a href="{% url 'profile:campaign_profile_edit' user.username campaign.pk %}"
+                       class="glyphicon glyphicon-pencil"></a>
+                    {% endif %}
+                </li>
                 <li>Campaign Points: {{ cp.cp }}</li>
                 <li>Victory Points: {{cp.vp }}</li>
                 <li>Wins: {{ cp.win }}</li>
