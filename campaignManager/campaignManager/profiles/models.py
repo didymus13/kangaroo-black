@@ -9,6 +9,7 @@ from django.dispatch import receiver
 from campaignManager.campaigns.models import Campaign
 from campaignManager.turns.models import Challenge, challenge_complete
 from django.contrib.auth.forms import UserCreationForm
+from django.db.models import Q
 
 class MyUserCreationForm(UserCreationForm):
     class Meta:
@@ -59,8 +60,9 @@ class CampaignProfile(models.Model):
     }
     
     user = models.ForeignKey(User)
-    faction = models.ForeignKey('armies.Faction', blank=True, null=True)
     campaign = models.ForeignKey('campaigns.Campaign')
+    faction = models.ForeignKey('armies.Faction', blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     # Campaign Points 
     cp = models.IntegerField(default=0)
     # Victory Points 
@@ -107,6 +109,11 @@ class CampaignProfile(models.Model):
         self.cp += self.OUTCOMES[status]
         self.vp += vp
 
+class CampaignProfileForm(ModelForm):
+    class Meta:
+        model = CampaignProfile
+        fields = ['faction', 'description']
+        
 @receiver(post_save, sender=Campaign)
 def ensure_campaign_profiles_exist(sender, **kwargs):
     campaign = kwargs.get('instance')
