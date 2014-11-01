@@ -53,7 +53,9 @@ class Campaign(models.Model):
     campaign_profiles = property(_get_campaign_profiles)
     
     def _get_current_turn(self):
-        return self.turn_set.all()[0]
+        if self.turn_set.all().count() > 0:
+            return self.turn_set.all()[0]
+        return False
     current_turn = property(_get_current_turn)
     
 class CampaignForm(ModelForm):
