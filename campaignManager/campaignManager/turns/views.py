@@ -27,7 +27,8 @@ def create(request, campaign_id):
             if not current_turn:
                 campaign.status = campaign.STATUS_PLAYING
                 campaign.save()
-                turn_finished(sender=current_turn.__class__, instance=current_turn)
+            else:
+                turn_finished.send(sender=current_turn.__class__, instance=current_turn)
             turn = form.save(commit=False)
             turn.campaign = campaign
             turn.save()
