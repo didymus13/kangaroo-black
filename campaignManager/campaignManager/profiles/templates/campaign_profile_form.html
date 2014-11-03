@@ -6,7 +6,6 @@ $(document).ready(function() {
     $.getJSON('{% url 'armies:get_game_factions' pk=cp.campaign.game.pk %}', function(data) {
         dropdown = $('#id_faction');
         selection = dropdown.find('option[selected=selected]');
-        console.log(selection.attr('value'));
         dropdown.find('option:gt(0)').remove();
         $.each(data, function() {
             dropdown.append('<option value="' + $(this)[0].pk + '">' + $(this)[0].fields.name + '</option>');
