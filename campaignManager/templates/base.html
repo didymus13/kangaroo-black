@@ -102,8 +102,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
+                    {% if header_image %}
+                    <img src="{{ header_image.url }}" 
+                         class="img img-responsive" />
+                    {% else %}
                     <img src="http://placehold.it/994x206.png&text=header_image" 
                          class="img img-responsive" />
+                    {% endif %}
                 </div>
             </div>
             

@@ -16,6 +16,7 @@ def detail(request, pk):
         'user': request.user,
         'editable': campaign.is_owned_by(request.user),
         'is_participant': campaign.is_participant(request.user), 
+        'header_image': campaign.photo,
     })
 
 def index(request, status=None, slug=None):
@@ -103,5 +104,6 @@ def dashboard(request, pk):
         'editable': campaign.is_owned_by(request.user),
         'is_participant': campaign.is_participant(request.user),
         'page_title': 'Your ' + campaign.name + ' dashboard',
-        'editable_profile': cp.user == request.user
+        'editable_profile': cp.user == request.user,
+        'header_image': campaign.photo,
     })
