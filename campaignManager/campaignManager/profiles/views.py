@@ -60,7 +60,7 @@ def campaign_profile_edit(request, username, campaign_id):
         except Exception as ex:
             messages.addMessage(request, messages.ERROR, ex)
         finally:
-            return redirect('campaign:dashboard', campaign_id=campaign.pk)
+            return redirect('campaigns:dashboard', pk=campaign.pk)
     
     form = CampaignProfileForm(instance=campaign_profile)
     return render(request, 'campaign_profile_form.html', {
