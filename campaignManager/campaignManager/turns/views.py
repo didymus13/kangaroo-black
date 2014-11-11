@@ -52,7 +52,8 @@ def edit(request, pk):
     
     if request.method == 'POST':
         form = TurnForm(request.POST, request.FILES, instance=turn)
-        if form.is_valid() and form.save():
+        if form.is_valid():
+            form.save()
             return redirect('campaigns:detail', turn.campaign.pk)
     
     else:
