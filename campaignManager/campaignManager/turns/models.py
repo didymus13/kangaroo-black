@@ -19,6 +19,9 @@ class Turn(models.Model):
         [STATUS_ACTIVE, 'active'],
         [STATUS_COMPLETE, 'complete']
     ]
+    MAP_SIZE = (500, 500)
+    MAP_THUMBNAIL_SIZE = (64, 64)
+    
     label = models.CharField(max_length=64, help_text='eg: Summer 1666, Stardate 12345.6')
     description = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -43,9 +46,9 @@ class Turn(models.Model):
             try:
                 map = Image.open(self.map)
                 map.load()
-                map.thumbnail((500, 500), Image.ANTIALIAS)
+                map.thumbnail(self.MAP_SIZE, Image.ANTIALIAS)
                 map.save(self.map.path)
-                print self.map.path
+                
             except Exception as ex:
                 print 'Error: %s' % ex
 
