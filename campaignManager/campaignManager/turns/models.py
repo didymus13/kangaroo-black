@@ -6,6 +6,8 @@ from django.dispatch import receiver
 import django.dispatch
 from django.db.models.signals import post_save
 from campaignManager.settings import UPLOAD_PATH
+from PIL import Image
+import os
 
 # Create your models here.
 class Turn(models.Model):
@@ -22,8 +24,31 @@ class Turn(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     campaign = models.ForeignKey('campaigns.Campaign', )
     status = models.PositiveIntegerField(default=STATUS_PENDING, choices=STATUS_CHOICES)
-    map = models.ImageField(blank=True, null=True, upload_to=UPLOAD_PATH)
-    
+    _map = models.ImageField(blank=True, null=True, upload_to=UPLOAD_PATH)
+    map_thumbnail = models.ImageField(blank=True, null=True, upload_to=UPLOAD_PATH)
+
+    def set_map(self, val):
+        self._map = val
+        self._map_changed = True
+
+    def get_map(self):
+        return self._map
+
+    map = property(get_map, set_map)
+
+    def save(self, *args, **kwargs):
+        super(Turn, self).save(*args, **kwargs)
+        
+        if getattr(self, '_map_changed', True):
+            try:
+                map = Image.open(self.map)
+                map.load()
+                map.thumbnail((500, 500), Image.ANTIALIAS)
+                map.save(self.map.path)
+                print self.map.path
+            except Exception as ex:
+                print 'Error: %s' % ex
+
     def __unicode__(self):
         return self.label
     
@@ -33,7 +58,7 @@ class Turn(models.Model):
 class TurnForm(ModelForm):
     class Meta:
         model = Turn
-        exclude = ['campaign', 'created', 'status']
+        exclude = ['campaign', 'created', 'status', 'map_thumbnail']
 
 turn_finished = django.dispatch.Signal(providing_args=['instance',])
 
