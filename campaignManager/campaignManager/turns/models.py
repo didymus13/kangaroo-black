@@ -1,3 +1,4 @@
+import os.path
 from django.db import models
 from django.forms import ModelForm
 from django.core.mail import send_mail
@@ -28,7 +29,6 @@ class Turn(models.Model):
     campaign = models.ForeignKey('campaigns.Campaign', )
     status = models.PositiveIntegerField(default=STATUS_PENDING, choices=STATUS_CHOICES)
     _map = models.ImageField(blank=True, null=True, upload_to=UPLOAD_PATH)
-    map_thumbnail = models.ImageField(blank=True, null=True, upload_to=UPLOAD_PATH)
 
     def set_map(self, val):
         self._map = val
@@ -38,6 +38,11 @@ class Turn(models.Model):
         return self._map
 
     map = property(get_map, set_map)
+    
+    def get_map_thumbnail(self):
+        path, ext = os.path.splitext(self.map.url)
+        return path + '-thumb' + ext;
+    map_thumbnail = property(get_map_thumbnail)
 
     def save(self, *args, **kwargs):
         super(Turn, self).save(*args, **kwargs)
@@ -49,6 +54,9 @@ class Turn(models.Model):
                 map.thumbnail(self.MAP_SIZE, Image.ANTIALIAS)
                 map.save(self.map.path)
                 
+                path, ext = os.path.splitext(self.map.path)
+                map.thumbnail(self.MAP_THUMBNAIL_SIZE, Image.ANTIALIAS)
+                map.save(path + '-thumb' + ext)
             except Exception as ex:
                 print 'Error: %s' % ex
 
