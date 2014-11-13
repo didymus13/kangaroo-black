@@ -37,7 +37,7 @@
                         {{ campaign.moderator }}
                     </a>
                 </td>
-                <td class="hidden-xs">{{ campaign.player_count|default:0 }}</td>
+                <td class="hidden-xs">{{ campaign.participants.count|default:0 }}</td>
                 <td class="hidden-xs">{{ campaign.get_status_display }}</td>
             </tr>
             {% empty %}
