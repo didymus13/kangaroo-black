@@ -87,6 +87,21 @@
                 {{ turn.description|markdown }}
             </div>
         </div>
+        <table class="table table-striped">
+            <thead>
+                <tr><th>Status</th><th>Participant</th><th>vs</th><th>Participant</th></tr>
+            </thead>
+            <tbody>
+                {% for challenge in turn.challenge_set.all %}
+                <tr>
+                    <td>{{ challenge.get_status_display }}</td>
+                    <td>{{ challenge.challenger }}</td>
+                    <td>vs</td>
+                    <td>{{ challenge.recipient }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     {% endfor %}
 </div>
