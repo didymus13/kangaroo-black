@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load markdown_deux_tags %}
+
+{% block main %}
+<div class="jumbotron">
+    <h1>Kangaroo Black title</h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur a ante 
+        ut mi scelerisque fermentum sed in libero. Suspendisse massa ligula, pharetra 
+        a tellus nec, tristique ultrices lectus. Aliquam quis arcu at eros egestas 
+        viverra sit amet in nulla. Suspendisse scelerisque massa purus, vel 
+        elementum nulla efficitur fermentum. Sed malesuada, .
+    </p>
+</div>
+
+<div class="row">
+    {% for post in posts %}
+    <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    {{ post.title }}
+                    <small>posted by {{ post.author }} on {{ post.live_date }}</small>
+                </h3>
+            </div>
+            <div class="panel-body">
+                {{ post.teaser|markdown }}
+                {% if post.content %}
+                <a href="{% url 'blog:detail' post.slug %}" >[ read more ]</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="panel-footer">
+            
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
