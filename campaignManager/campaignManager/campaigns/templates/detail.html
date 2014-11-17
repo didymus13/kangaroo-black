@@ -69,7 +69,7 @@
     <div class="col-xs-12 col-sm-6 col-md-4">
         <div class="media">
             {% if turn.map %}
-            <a href="{{ turn.map.url }}" class="pull-left" target="_blank">
+            <a href="{{ turn.map.url }}" class="fancybox pull-left" target="_blank" title="{{ turn.label }}">
                 <img src="{{ turn.map_thumbnail }}" 
                      class="media-object img-rounded img-responsive turn-map" 
                      alt="{{ turn.label }}" />
@@ -111,5 +111,6 @@
 {% block custom_js %}
     $(document).ready(function() {
         $('.tooltipped').tooltip();
+        $('.fancybox').fancybox();
     });
 {% endblock %}
