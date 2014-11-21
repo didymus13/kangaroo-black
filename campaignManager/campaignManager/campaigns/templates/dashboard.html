@@ -3,7 +3,7 @@
 {% block main %}
 
 <div class="row">
-    <div class=" col-xs-12 col-sm-6">
+    <div class=" col-xs-12 col-sm-4">
         <div class='panel panel-default'>
             <div class="panel-heading">Current Performance</div>
             <ul>
@@ -23,7 +23,7 @@
         </div>
     </div>
     
-    <div class=" col-xs-12 col-sm-6">
+    <div class=" col-xs-12 col-sm-8">
         <div class='panel panel-default'>
             <div class='panel-heading'>Received Challenges</div>
             <table class='table table-hover'>
@@ -65,10 +65,10 @@
                                     Accept
                                 </a>
                             {% elif challenge.status == challenge.STATUS_ACCEPTED %}
-                                <a href="{% url 'turns:challenge_resolve' challenge.uuid 'win' %}" class="btn btn-success">
+                                <a href="{% url 'turns:challenge_resolve' challenge.uuid 'win' %}" class="btn btn-sm btn-success">
                                     I Won
                                 </a>
-                                <a href="{% url 'turns:challenge_resolve' challenge.uuid 'loss' %}" class="btn btn-danger">
+                                <a href="{% url 'turns:challenge_resolve' challenge.uuid 'loss' %}" class="btn btn-sm btn-danger">
                                     I Lost
                                 </a> 
                             {% endif %}
