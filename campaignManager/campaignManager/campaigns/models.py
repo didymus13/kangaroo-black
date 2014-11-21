@@ -7,14 +7,12 @@ from campaignManager.settings import UPLOAD_PATH
 # Create your models here.
 class Campaign(models.Model):
     STATUS_SETUP = 0
-    STATUS_LOOKING = 100
     STATUS_PLAYING = 300
     STATUS_FINISHED = 500
     STATUS_HIATUS = 600
     
     CAMPAIGN_STATUS_FLAGS = (
         (STATUS_SETUP, 'setting up'),
-        (STATUS_LOOKING, 'looking for players'),
         (STATUS_PLAYING, 'playing'),
         (STATUS_FINISHED, 'finished'),
         (STATUS_HIATUS, 'on hiatus'),
@@ -34,6 +32,7 @@ class Campaign(models.Model):
     status = models.PositiveSmallIntegerField(
         default=STATUS_SETUP, 
         choices=CAMPAIGN_STATUS_FLAGS, )
+    looking_for_players = models.BooleanField(default=True)
     photo = models.ImageField(blank=True, null=True, upload_to=UPLOAD_PATH)
     
     def __unicode__(self):

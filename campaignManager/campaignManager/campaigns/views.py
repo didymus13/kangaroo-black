@@ -19,18 +19,19 @@ def detail(request, pk):
         'header_image': campaign.photo,
     })
 
-def index(request, status=None, slug=None):
+def index(request, status=None, slug=None, looking_for_players=None):
     campaigns = Campaign.objects.all()
     if status: campaigns = campaigns.filter(status=status)
     if slug: campaigns = campaigns.filter(game__slug=slug)
+    if looking_for_players: campaigns = campaigns.filter(looking_for_players=looking_for_players)
     
     return render(request, 'index.html', {
         'campaigns': campaigns,
         'user': request.user,
     })
     
-def looking_for_players(request):
-    return index(request, Campaign.STATUS_LOOKING)
+def looking_for_players(request, status=None, slug=None):
+    return index(request, status, slug, True)
 
 @login_required
 def my_index(request):
