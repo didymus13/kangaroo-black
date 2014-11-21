@@ -27,7 +27,7 @@
                 <th class="text-center hidden-xs">Draw</th>
                 <th class="text-center hidden-xs">Loss</th>
                 <th class="text-center hidden-xs">Matches</th>
-                {% if not user.is_anonymous %}
+                {% if not user.is_anonymous and is_participant %}
                 <th>
                     <span class="glyphicon glyphicon-screenshot"></span>
                     <span class="hidden-xs">Challenge</span>
