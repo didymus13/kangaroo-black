@@ -65,10 +65,10 @@
                                     Accept
                                 </a>
                             {% elif challenge.status == challenge.STATUS_ACCEPTED %}
-                                <a href="{% url 'turns:challenge_resolve' challenge.uuid 'win' %}" class="btn btn-success">
+                                <a href="{% url 'turns:challenge_resolve' challenge.uuid 'win' %}" class="btn btn-xs btn-success">
                                     I Won
                                 </a>
-                                <a href="{% url 'turns:challenge_resolve' challenge.uuid 'loss' %}" class="btn btn-danger">
+                                <a href="{% url 'turns:challenge_resolve' challenge.uuid 'loss' %}" class="btn btn-xs btn-danger">
                                     I Lost
                                 </a> 
                             {% endif %}
