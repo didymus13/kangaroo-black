@@ -102,7 +102,9 @@
                          class="img img-responsive" />
                     {% else %}
                     <img src="{% static 'images/header.jpg' %}" 
-                         class="img img-responsive" />
+                         class="img img-responsive hidden-xs" />
+                     <img src="{% static 'images/header_sm.jpg' %}" 
+                         class="img img-responsive visible-xs" />
                     {% endif %}
                 </div>
             </div>
