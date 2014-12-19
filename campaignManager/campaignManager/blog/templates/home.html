@@ -18,10 +18,9 @@
     <div class="col-xs-12 col-sm-6 col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">
-                    {{ post.title }}
-                    <small>posted by {{ post.author }} on {{ post.live_date }}</small>
-                </h3>
+                <a href="{% url 'blog:detail' post.slug %}" >
+                    <h3 class="panel-title">{{ post.title }}</h3>
+                </a>
             </div>
             <div class="panel-body">
                 {{ post.teaser|markdown }}
@@ -29,9 +28,9 @@
                 <a href="{% url 'blog:detail' post.slug %}" >[ read more ]</a>
                 {% endif %}
             </div>
-        </div>
-        <div class="panel-footer">
-            
+            <div class="panel-footer">
+                <small>Posted by {{ post.author }} on {{ post.live_date }}</small>
+            </div>   
         </div>
     </div>
     {% endfor %}
